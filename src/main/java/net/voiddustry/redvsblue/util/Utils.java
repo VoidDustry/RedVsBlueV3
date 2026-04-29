@@ -9,6 +9,7 @@ import arc.util.Timer;
 import arc.util.serialization.*;
 import mindustry.Vars;
 import mindustry.content.*;
+import mindustry.entities.EntityGroup;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.game.Team;
 import mindustry.gen.*;
@@ -19,6 +20,7 @@ import java.util.Locale;
 import java.util.HashMap;
 
 import mindustry.type.Weapon;
+import mindustry.world.Tile;
 import mindustry.world.Block;
 import mindustry.world.blocks.environment.*;
 import mindustry.world.meta.BuildVisibility;
@@ -120,35 +122,26 @@ public class Utils {
 
         Timer.schedule(() -> stageTimer--, 0, 1);
 
-         Timer.schedule(() -> Groups.player.each(player -> {
-            if (player.tileOn() != null && player.team() == Team.blue && player.unit() != null) {
-                if (player.tileOn().block() != null && (player.tileOn().block() == Blocks.cliff || (player.tileOn().block() instanceof Prop && player.tileOn().block().breakable) || player.tileOn().block() instanceof TallBlock)) {
-                    return;
+        Timer.schedule(() -> {
+            EntityGroup<Unit> units = Groups.unit;
+            int size = units.size();
+            for (int i = 0; i < size; i++) {
+                Unit unit = units.index(i);
+                if (unit.team != Team.blue) continue;
+                Tile tile = unit.tileOn();
+                if (tile == null) continue;
+                Building build = tile.build;
+                if (build != null) {
+                    Team team = build.team;
+                    if (team == Team.blue || team == Team.derelict) continue;
+                } else if (!tile.legSolid()) {
+                    continue;
                 }
-                if (player.tileOn().build != null && player.tileOn().build.team != Team.blue && player.tileOn().build.team != Team.derelict) {
-                    if (player.unit().health <= 1) {
-                        player.unit().kill();
-                    }
-                    player.unit().health -= player.unit().type.health/100;
-                    Call.effect(Fx.burning, player.x, player.y, 1, Color.red);
-
-                } else if (!player.tileOn().block().isAir() || player.tileOn().isDarkened()) {
-                    if (player.unit().health <= 1) {
-                        player.unit().kill();
-                    }
-                    if (!player.tileOn().block().canBeBuilt()) {
-                        player.unit().health -= player.unit().type.health/100;
-                        Call.effect(Fx.burning, player.x, player.y, 1, Color.red);
-                    }
-                }
-            } else if (player.tileOn() == null && player.unit() != null) {
-                if (player.unit().health <= 1) {
-                    player.unit().kill();
-                }
-                player.unit().health -= player.unit().type.health/100;
-                Call.effect(Fx.burning, player.x, player.y, 1, Color.red);
+                if (unit.health <= 1f) unit.kill();
+                unit.health -= unit.type.health / 100f;
+                Call.effect(Fx.burning, unit.x, unit.y, 1, Color.red);
             }
-        }), 0, 0.1F);
+        }, 0, 0.1f);
     }
 
     public static void processLevel(Player player, PlayerData data) {
