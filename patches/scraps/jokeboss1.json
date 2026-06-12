@@ -1,0 +1,903 @@
+{
+  "name": "toxopid boss, made by alphy using toxopid",
+  "unit": {
+    "toxopid": {
+      "localizedName": "Toxopid",
+      "description": "Slow, heavily armored siege mech. Saturates the mid-range with artillery and missiles, and fires a long-cooldown lance strike across the map.",
+      "details": "Siege chassis. Built from toxopid, reign and scepter components.",
+      "type": "mech",
+      "flying": "false",
+      "controller": "GroundAI",
+      "aiController": "GroundAI",
+      "playerControllable": "true",
+      "logicControllable": "true",
+      "autoFindTarget": "true",
+      "targetable": "true",
+      "hittable": "true",
+      "targetAir": "true",
+      "targetGround": "true",
+      "useUnitCap": "true",
+      "createScorch": "true",
+      "coreUnitDock": "false",
+      "region": "toxopid",
+      "previewRegion": "unit-toxopid",
+      "uiIcon": "unit-toxopid-ui",
+      "fullIcon": "unit-toxopid",
+      "shadowRegion": "toxopid",
+      "cellRegion": "scepter-cell",
+      "legRegion": "reign-leg",
+      "legLength": 36,
+      "mechStepParticles": "true",
+      "mechFrontSway": 1.2,
+      "mechSideSway": 0.6,
+      "stepShake": 1.4,
+      "stepSound": "mechStepHeavy",
+      "stepSoundPitch": 0.8,
+      "stepSoundVolume": 0.7,
+      "drownTimeMultiplier": 4,
+      "speed": 0.3,
+      "rotateSpeed": 0.55,
+      "aimDst": 140,
+      "hitSize": 44,
+      "health": 58000,
+      "armor": 14,
+      "range": 340,
+      "maxRange": 520,
+      "fogRadius": 340,
+      "trailLength": 4,
+      "trailScl": 3,
+      "fallEngineEffect": "rocketSmokeLarge",
+      "parts": [
+        {
+          "type": "RegionPart",
+          "name": "toxopid",
+          "xScl": 1.6,
+          "yScl": 1.25,
+          "layerOffset": -0.004
+        },
+        {
+          "type": "RegionPart",
+          "name": "reign",
+          "xScl": 1.1,
+          "yScl": 1.1,
+          "layerOffset": -0.003
+        },
+        {
+          "type": "RegionPart",
+          "name": "scepter",
+          "xScl": 1.15,
+          "yScl": 1.15,
+          "y": 10,
+          "layerOffset": -0.002
+        },
+        {
+          "type": "RegionPart",
+          "name": "scepter",
+          "xScl": 1.9,
+          "y": -4,
+          "layerOffset": -0.003
+        },
+        {
+          "type": "RegionPart",
+          "name": "horizon",
+          "y": 30,
+          "xScl": 1.4,
+          "yScl": 1.4,
+          "outline": "false",
+          "layerOffset": -1
+        },
+        {
+          "type": "RegionPart",
+          "name": "antumbra",
+          "y": -28,
+          "layerOffset": -1
+        },
+        {
+          "type": "RegionPart",
+          "name": "antumbra",
+          "x": 14,
+          "rotation": -15,
+          "layerOffset": -1
+        },
+        {
+          "type": "RegionPart",
+          "name": "antumbra",
+          "x": -14,
+          "rotation": 15,
+          "layerOffset": -1
+        }
+      ],
+      "weapons": [
+        {
+          "name": "toxopid-weapon",
+          "top": "true",
+          "x": 28,
+          "y": 6,
+          "shootY": 16,
+          "reload": 60,
+          "recoil": 8,
+          "recoils": 1,
+          "recoilTime": 50,
+          "shake": 3.5,
+          "rotate": "true",
+          "rotateSpeed": 0.6,
+          "inaccuracy": 3,
+          "ejectEffect": "casing4",
+          "shootSound": "shootMalign",
+          "layerOffset": -0.0005,
+          "parts": [
+            {
+              "type": "RegionPart",
+              "name": "toxopid-weapon",
+              "xScl": 1.6,
+              "yScl": 1.1,
+              "layerOffset": 0.0001
+            },
+            {
+              "type": "RegionPart",
+              "name": "reign-weapon",
+              "xScl": 0.9,
+              "yScl": 0.9,
+              "layerOffset": 0.0002
+            },
+            {
+              "type": "RegionPart",
+              "name": "scepter-weapon",
+              "y": -16,
+              "xScl": 0.8,
+              "yScl": 0.8,
+              "layerOffset": 0.0001
+            },
+            {
+              "type": "RegionPart",
+              "name": "scepter-weapon",
+              "y": 16,
+              "xScl": 0.8,
+              "yScl": 0.8,
+              "layerOffset": 0.0001
+            },
+            {
+              "type": "RegionPart",
+              "name": "flare",
+              "y": 4,
+              "layerOffset": 1,
+              "outline": "false",
+              "moveY": -5,
+              "clampProgress": "false"
+            }
+          ],
+          "bullet": {
+            "type": "BasicBulletType",
+            "damage": 80,
+            "splashDamage": 320,
+            "splashDamageRadius": 34,
+            "speed": 12,
+            "width": 22,
+            "height": 80,
+            "lifetime": 30,
+            "shootEffect": "shootBig",
+            "hitEffect": "blastExplosion",
+            "hitSound": "explosion",
+            "despawnSound": "shockBullet",
+            "lightning": 3,
+            "lightningDamage": 35,
+            "lightningLength": 14,
+            "lightningColor": "fffd7aff",
+            "fragBullets": 1,
+            "fragRandomSpread": 1,
+            "fragLifeMin": 5,
+            "fragLifeMax": 6,
+            "fragBullet": {
+              "type": "BasicBulletType",
+              "damage": 120,
+              "width": 18,
+              "height": 38,
+              "lifetime": 5,
+              "speed": 13,
+              "pierce": "true",
+              "pierceBuilding": "true",
+              "pierceCap": 99999,
+              "hitSound": "shockBullet",
+              "despawnSound": "explosion"
+            }
+          }
+        },
+        {
+          "name": "toxopid-weapon",
+          "top": "true",
+          "x": -28,
+          "y": 6,
+          "shootY": 16,
+          "reload": 60,
+          "shoot": {
+            "firstShotDelay": 28
+          },
+          "recoil": 8,
+          "recoils": 1,
+          "recoilTime": 50,
+          "shake": 3.5,
+          "rotate": "true",
+          "rotateSpeed": 0.6,
+          "inaccuracy": 3,
+          "ejectEffect": "casing4",
+          "shootSound": "shootMalign",
+          "layerOffset": -0.0005,
+          "parts": [
+            {
+              "type": "RegionPart",
+              "name": "toxopid-weapon",
+              "xScl": -1.6,
+              "yScl": 1.1,
+              "layerOffset": 0.0001
+            },
+            {
+              "type": "RegionPart",
+              "name": "reign-weapon",
+              "xScl": -0.9,
+              "yScl": 0.9,
+              "layerOffset": 0.0002
+            },
+            {
+              "type": "RegionPart",
+              "name": "scepter-weapon",
+              "xScl": -0.8,
+              "yScl": 0.8,
+              "y": -16,
+              "layerOffset": 0.0001
+            },
+            {
+              "type": "RegionPart",
+              "name": "scepter-weapon",
+              "xScl": -0.8,
+              "yScl": 0.8,
+              "y": 16,
+              "layerOffset": 0.0001
+            }
+          ],
+          "bullet": {
+            "type": "BasicBulletType",
+            "damage": 80,
+            "splashDamage": 320,
+            "splashDamageRadius": 34,
+            "speed": 12,
+            "width": 22,
+            "height": 80,
+            "lifetime": 30,
+            "shootEffect": "shootBig",
+            "hitEffect": "blastExplosion",
+            "hitSound": "explosion",
+            "despawnSound": "shockBullet",
+            "lightning": 3,
+            "lightningDamage": 35,
+            "lightningLength": 14,
+            "lightningColor": "fffd7aff",
+            "fragBullets": 1,
+            "fragRandomSpread": 1,
+            "fragLifeMin": 5,
+            "fragLifeMax": 6,
+            "fragBullet": {
+              "type": "BasicBulletType",
+              "damage": 120,
+              "width": 18,
+              "height": 38,
+              "lifetime": 5,
+              "speed": 13,
+              "pierce": "true",
+              "pierceBuilding": "true",
+              "pierceCap": 99999,
+              "hitSound": "shockBullet",
+              "despawnSound": "explosion"
+            }
+          }
+        },
+        {
+          "name": "large-artillery",
+          "x": 14,
+          "y": -22,
+          "baseRotation": 20,
+          "rotate": "true",
+          "rotationLimit": 140,
+          "rotateSpeed": 0.5,
+          "reload": 90,
+          "recoil": 6,
+          "recoilTime": 60,
+          "shootSound": "shootReign",
+          "ejectEffect": "hitScepterSecondary",
+          "parts": [
+            {
+              "type": "RegionPart",
+              "name": "large-mount",
+              "outline": "false",
+              "xScl": 1.4,
+              "yScl": 1.4
+            },
+            {
+              "type": "RegionPart",
+              "name": "missiles-mount",
+              "outline": "false",
+              "mirror": "true",
+              "y": -3
+            }
+          ],
+          "bullet": {
+            "backRegion": "bullet-back",
+            "frontRegion": "bullet",
+            "width": 16,
+            "height": 20,
+            "shrinkY": 0.1,
+            "speed": 6.5,
+            "lifetime": 80,
+            "damage": 70,
+            "splashDamage": 80,
+            "splashDamageRadius": 24,
+            "layer": 120,
+            "hitSize": 10,
+            "hitSound": "shootStell",
+            "despawnSound": "shootPulsar",
+            "trailInterp": "fade",
+            "trailLength": 6,
+            "trailInterval": 0,
+            "trailWidth": 4,
+            "lightning": 4,
+            "lightningLength": 14,
+            "lightningDamage": 22,
+            "lightningCone": 25,
+            "lightningLengthRand": 5,
+            "lightningAngle": 10,
+            "lightningColor": "f3a779ff",
+            "lightColor": "fb9866ff"
+          }
+        },
+        {
+          "name": "large-artillery",
+          "x": -14,
+          "y": -22,
+          "baseRotation": -20,
+          "rotate": "true",
+          "rotationLimit": 140,
+          "rotateSpeed": 0.5,
+          "reload": 90,
+          "recoil": 6,
+          "recoilTime": 60,
+          "shootSound": "shootReign",
+          "ejectEffect": "hitScepterSecondary",
+          "shoot": {
+            "firstShotDelay": 45
+          },
+          "parts": [
+            {
+              "type": "RegionPart",
+              "name": "large-mount",
+              "outline": "false",
+              "xScl": 1.4,
+              "yScl": 1.4
+            },
+            {
+              "type": "RegionPart",
+              "name": "missiles-mount",
+              "outline": "false",
+              "mirror": "true",
+              "y": -3
+            }
+          ],
+          "bullet": {
+            "backRegion": "bullet-back",
+            "frontRegion": "bullet",
+            "width": 16,
+            "height": 20,
+            "shrinkY": 0.1,
+            "speed": 6.5,
+            "lifetime": 80,
+            "damage": 70,
+            "splashDamage": 80,
+            "splashDamageRadius": 24,
+            "layer": 120,
+            "hitSize": 10,
+            "hitSound": "shootStell",
+            "despawnSound": "shootPulsar",
+            "trailInterp": "fade",
+            "trailLength": 6,
+            "trailInterval": 0,
+            "trailWidth": 4,
+            "lightning": 4,
+            "lightningLength": 14,
+            "lightningDamage": 22,
+            "lightningCone": 25,
+            "lightningLengthRand": 5,
+            "lightningAngle": 10,
+            "lightningColor": "f3a779ff",
+            "lightColor": "fb9866ff"
+          }
+        },
+        {
+          "name": "zenith-missiles",
+          "x": 18,
+          "y": 6,
+          "baseRotation": 25,
+          "reload": 180,
+          "xRand": 8,
+          "inaccuracy": 6,
+          "recoil": 0,
+          "recoilPow": 0,
+          "recoilTime": 0,
+          "shootCone": 180,
+          "useAttackRange": "false",
+          "shootSound": "shootHorizon",
+          "ejectEffect": "unitDust",
+          "shoot": {
+            "shots": 8,
+            "shotDelay": 7
+          },
+          "parts": [
+            {
+              "type": "RegionPart",
+              "name": "missiles-mount",
+              "outline": "false"
+            },
+            {
+              "type": "RegionPart",
+              "name": "missiles-mount",
+              "outline": "false",
+              "x": 5
+            },
+            {
+              "type": "RegionPart",
+              "name": "missiles-mount",
+              "outline": "false",
+              "x": -5
+            },
+            {
+              "type": "RegionPart",
+              "name": "missiles-mount",
+              "outline": "false",
+              "x": -2.5,
+              "y": -3
+            },
+            {
+              "type": "RegionPart",
+              "name": "missiles-mount",
+              "outline": "false",
+              "x": 2.5,
+              "y": -3
+            }
+          ],
+          "bullet": {
+            "layer": 120,
+            "sprite": "missile",
+            "backSprite": "missile-back",
+            "backRegion": "missile-back",
+            "frontRegion": "missile",
+            "width": 10,
+            "height": 11,
+            "shrinkY": 0,
+            "speed": 3.2,
+            "accel": 0.012,
+            "inaccuracy": 3,
+            "weaveMag": 1.2,
+            "weaveScale": 6,
+            "splashDamage": 15,
+            "splashDamageRadius": 30,
+            "lifetime": 110,
+            "trailLength": 5,
+            "homingPower": 0.012,
+            "homingRange": 75,
+            "homingDelay": 0.2,
+            "backColor": "f99f7aff",
+            "damage": 14
+          }
+        },
+        {
+          "name": "zenith-missiles",
+          "x": -18,
+          "y": 6,
+          "baseRotation": -25,
+          "reload": 180,
+          "xRand": 8,
+          "inaccuracy": 6,
+          "recoil": 0,
+          "recoilPow": 0,
+          "recoilTime": 0,
+          "shootCone": 180,
+          "useAttackRange": "false",
+          "shootSound": "shootHorizon",
+          "ejectEffect": "unitDust",
+          "shoot": {
+            "shots": 8,
+            "shotDelay": 7,
+            "firstShotDelay": 40
+          },
+          "parts": [
+            {
+              "type": "RegionPart",
+              "name": "missiles-mount",
+              "outline": "false"
+            },
+            {
+              "type": "RegionPart",
+              "name": "missiles-mount",
+              "outline": "false",
+              "x": 5
+            },
+            {
+              "type": "RegionPart",
+              "name": "missiles-mount",
+              "outline": "false",
+              "x": -5
+            },
+            {
+              "type": "RegionPart",
+              "name": "missiles-mount",
+              "outline": "false",
+              "x": -2.5,
+              "y": -3
+            },
+            {
+              "type": "RegionPart",
+              "name": "missiles-mount",
+              "outline": "false",
+              "x": 2.5,
+              "y": -3
+            }
+          ],
+          "bullet": {
+            "layer": 120,
+            "sprite": "missile",
+            "backSprite": "missile-back",
+            "backRegion": "missile-back",
+            "frontRegion": "missile",
+            "width": 10,
+            "height": 11,
+            "shrinkY": 0,
+            "speed": 3.2,
+            "accel": 0.012,
+            "inaccuracy": 3,
+            "weaveMag": 1.2,
+            "weaveScale": 6,
+            "splashDamage": 15,
+            "splashDamageRadius": 30,
+            "lifetime": 110,
+            "trailLength": 5,
+            "homingPower": 0.012,
+            "homingRange": 75,
+            "homingDelay": 0.2,
+            "backColor": "f99f7aff",
+            "damage": 14
+          }
+        },
+        {
+          "name": "large-laser-mount",
+          "x": 20,
+          "y": 18,
+          "shootY": 10,
+          "reload": 18,
+          "recoil": 5,
+          "recoilTime": 120,
+          "recoilPow": 2,
+          "rotate": "true",
+          "rotationLimit": 100,
+          "rotateSpeed": 0.5,
+          "shootSound": "shootMissile",
+          "layerOffset": -1,
+          "parts": [
+            {
+              "type": "RegionPart",
+              "name": "large-laser-mount",
+              "outline": "false",
+              "layerOffset": 5
+            },
+            {
+              "type": "RegionPart",
+              "name": "sei-launcher",
+              "y": -7,
+              "outline": "false",
+              "layerOffset": 2
+            }
+          ],
+          "shoot": {
+            "firstShotDelay": 5
+          },
+          "bullet": {
+            "type": "LaserBulletType",
+            "laserEffect": "hitLaserBlast",
+            "length": 260,
+            "width": 28,
+            "largeHit": "true",
+            "hitSize": 12,
+            "hitEffect": "scatheSlash",
+            "hitColor": "ccfdffff",
+            "damage": 55,
+            "layer": 115,
+            "status": "freezing",
+            "statusDuration": 120
+          }
+        },
+        {
+          "name": "large-laser-mount",
+          "x": -20,
+          "y": 18,
+          "shootY": 10,
+          "reload": 18,
+          "recoil": 5,
+          "recoilTime": 120,
+          "recoilPow": 2,
+          "rotate": "true",
+          "rotationLimit": 100,
+          "rotateSpeed": 0.5,
+          "shootSound": "shootMissile",
+          "layerOffset": -1,
+          "parts": [
+            {
+              "type": "RegionPart",
+              "name": "large-laser-mount",
+              "outline": "false",
+              "layerOffset": 5
+            },
+            {
+              "type": "RegionPart",
+              "name": "sei-launcher",
+              "y": -7,
+              "outline": "false",
+              "layerOffset": 2
+            }
+          ],
+          "bullet": {
+            "type": "LaserBulletType",
+            "laserEffect": "hitLaserBlast",
+            "length": 260,
+            "width": 28,
+            "largeHit": "true",
+            "hitSize": 12,
+            "hitEffect": "scatheSlash",
+            "hitColor": "ccfdffff",
+            "damage": 55,
+            "layer": 115,
+            "status": "freezing",
+            "statusDuration": 120
+          }
+        },
+        {
+          "name": "missiles-mount",
+          "x": 0,
+          "y": 24,
+          "reload": 900,
+          "cooldownTime": 60,
+          "shake": 4,
+          "recoil": 6,
+          "recoils": 1,
+          "recoilTime": 60,
+          "inaccuracy": 14,
+          "velocityRnd": 0.4,
+          "extraVelocity": 0.4,
+          "rotate": "true",
+          "rotateSpeed": 99999,
+          "autoTarget": "true",
+          "alwaysShooting": "true",
+          "controllable": "false",
+          "targetInterval": 200,
+          "shootSound": "shootArtillery",
+          "chargeSound": "loopMalign",
+          "activeSoundVolume": 1,
+          "shootSoundVolume": 0.6,
+          "shoot": {
+            "firstShotDelay": 30,
+            "shots": 10,
+            "shotDelay": 10
+          },
+          "layerOffset": 0.05,
+          "parts": [
+            {
+              "type": "RegionPart",
+              "name": "scepter-weapon",
+              "outline": "false",
+              "layerOffset": 0.061
+            },
+            {
+              "type": "RegionPart",
+              "name": "sei-launcher",
+              "outline": "false",
+              "layerOffset": 0.06,
+              "xScl": 0.7
+            },
+            {
+              "type": "RegionPart",
+              "name": "large-bullet-mount",
+              "outline": "false",
+              "x": 5,
+              "mirror": "true",
+              "moveX": 3,
+              "moveY": -2,
+              "clampProgress": "false",
+              "moveRot": 15
+            },
+            {
+              "type": "RegionPart",
+              "name": "large-bullet-mount",
+              "outline": "false",
+              "x": -5,
+              "mirror": "true",
+              "moveX": -3,
+              "moveY": -3,
+              "clampProgress": "false",
+              "moveRot": -15
+            },
+            {
+              "type": "RegionPart",
+              "name": "flare",
+              "y": 4,
+              "layerOffset": 1,
+              "outline": "false",
+              "moveY": -5,
+              "clampProgress": "false"
+            },
+            {
+              "type": "RegionPart",
+              "name": "horizon",
+              "y": 1.5,
+              "moveY": -3.3,
+              "clampProgress": "false"
+            },
+            {
+              "type": "RegionPart",
+              "name": "missiles-mount",
+              "y": 4,
+              "layerOffset": 1,
+              "outline": "false",
+              "moveY": -5,
+              "clampProgress": "false"
+            }
+          ],
+          "bullet": {
+            "collidesAir": "true",
+            "type": "ArtilleryBulletType",
+            "range": 99999999,
+            "width": 16,
+            "height": 16,
+            "speed": 4.2,
+            "lifetime": 9999,
+            "fragBullets": 1,
+            "fragLifeMin": 2.5,
+            "fragBullet": {
+              "type": "BasicBulletType",
+              "speed": 0,
+              "lifetime": 60,
+              "collides": "false",
+              "despawnEffect": "unitCapKill",
+              "despawnSound": "uiUnlock",
+              "width": 15,
+              "height": 15,
+              "fragBullets": 1,
+              "fragBullet": {
+                "type": "BasicBulletType",
+                "speed": 0,
+                "lifetime": 60,
+                "collides": "false",
+                "despawnEffect": "unitCapKill",
+                "despawnSound": "uiUnlock",
+                "width": 15,
+                "height": 15,
+                "fragBullets": 1,
+                "fragBullet": {
+                  "type": "BasicBulletType",
+                  "speed": 0,
+                  "lifetime": 60,
+                  "collides": "false",
+                  "despawnEffect": "unitCapKill",
+                  "despawnSound": "uiUnlock",
+                  "width": 15,
+                  "height": 15,
+                  "fragBullets": 1,
+                  "fragBullet": {
+                    "type": "BasicBulletType",
+                    "speed": 0,
+                    "lifetime": 60,
+                    "collides": "false",
+                    "despawnEffect": "unitCapKill",
+                    "despawnSound": "uiUnlock",
+                    "width": 15,
+                    "height": 15,
+                    "fragBullets": 1,
+                    "fragBullet": {
+                      "type": "BasicBulletType",
+                      "speed": 0,
+                      "lifetime": 90,
+                      "collides": "false",
+                      "despawnEffect": "none",
+                      "width": 10,
+                      "height": 10,
+                      "fragBullets": 1,
+                      "fragBullet": {
+                        "type": "ExplosionBulletType",
+                        "collidesAir": "true",
+                        "despawnHit": "true",
+                        "killShooter": "false",
+                        "lightning": 3,
+                        "lightningLength": 24,
+                        "lightningDamage": 28,
+                        "lightningColor": "7adff9ff",
+                        "hitSound": "explosionMissile",
+                        "splashDamage": 440,
+                        "scaledSplashDamage": "true",
+                        "splashDamageRadius": 50,
+                        "buildingDamageMultiplier": 999,
+                        "despawnEffect": {
+                          "type": "ExplosionEffect",
+                          "lifetime": 50,
+                          "waveStroke": 5,
+                          "waveLife": 24,
+                          "waveColor": "7adff9ff",
+                          "sparkColor": "7adff9ff",
+                          "smokeColor": "ffffff",
+                          "waveRad": 72,
+                          "smokeSize": 4,
+                          "smokes": 21,
+                          "smokeSizeBase": 0,
+                          "sparks": 30,
+                          "sparkRad": 72,
+                          "sparkLen": 6,
+                          "sparkStroke": 2
+                        },
+                        "fragBullets": 3,
+                        "fragBullet": {
+                          "type": "EmpBulletType",
+                          "height": 5,
+                          "width": 5,
+                          "shrinkY": 0,
+                          "despawnEffect": "regenSuppressParticle",
+                          "hitEffect": "regenSuppressParticle",
+                          "backColor": "7adff9ff",
+                          "radius": 220,
+                          "hitSize": 22,
+                          "absorbable": "false",
+                          "status": "shocked",
+                          "layer": 130,
+                          "hitPowerEffect": "scatheSlash",
+                          "timeDuration": 1500,
+                          "damage": 550,
+                          "unitDamageScl": 1.2
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "abilities": {
+        "+": [
+          {
+            "type": "ShieldArcAbility",
+            "regen": 0.25,
+            "angle": 55,
+            "radius": 50,
+            "whenShooting": "false",
+            "max": 1200,
+            "angleOffset": 50,
+            "width": 4
+          },
+          {
+            "type": "ShieldArcAbility",
+            "regen": 0.25,
+            "angle": 55,
+            "radius": 50,
+            "whenShooting": "false",
+            "max": 1200,
+            "angleOffset": -50,
+            "width": 4
+          },
+          {
+            "type": "StatusFieldAbility",
+            "duration": 9999999,
+            "range": 80,
+            "reload": 60,
+            "status": "overdrive",
+            "launchEffect": "waveLiquid"
+          }
+        ]
+      },
+      "hideDetails": "false",
+      "engineColor": "ff9040ff"
+    }
+  }
+}

@@ -1,0 +1,471 @@
+unit.evoke: {
+  localizedName: "Arachnid boss, made by alphy using toxopid"
+  description: "Colossal siege arachnid. Annihilates fortifications from extreme range with heavy artillery and saturates mid-range targets with corrosive weaponry."
+  region: "toxopid"
+  
+  type: legs
+  controller: GroundAI
+  aiController: GroundAI
+  
+  flying: false
+  hittable: true
+  targetable: true
+  targetAir: true
+  targetGround: true
+  
+  // Core Stats - Slow and tanky
+  health: 62000
+  armor: 14
+  speed: 0.28
+  rotateSpeed: 0.7
+  hitSize: 72
+  
+  // Leg Configuration
+  legCount: 8
+  legLength: 48
+  legSpeed: 0.6
+  legRegion: "toxopid-leg"
+  legBaseRegion: "toxopid-leg-base"
+  legMoveSpace: 2.5
+  legExtension: -4
+  
+  // AI Range
+  range: 420
+  maxRange: 480
+  aimDst: 180
+  
+  // Visual Parts - Layered Toxopid/Arkyid anatomy
+  parts: [
+    {
+      // Main chassis scaled up
+      type: RegionPart
+      name: "toxopid"
+      layerOffset: -0.001
+      xScl: 2.0
+      yScl: 2.0
+      outline: false
+    }
+    {
+      // Secondary thorax
+      type: RegionPart
+      name: "arkyid"
+      layerOffset: -0.002
+      y: 10
+      xScl: 1.6
+      yScl: 1.6
+      outline: false
+    }
+    {
+      // Left flank armor
+      type: RegionPart
+      name: "arkyid"
+      layerOffset: -0.003
+      x: 16
+      y: -6
+      rotation: -20
+      xScl: 1.2
+    }
+    {
+      // Right flank armor
+      type: RegionPart
+      name: "arkyid"
+      layerOffset: -0.003
+      x: -16
+      y: -6
+      rotation: 20
+      xScl: 1.2
+    }
+    {
+      // Ventral detail
+      type: RegionPart
+      name: "spiroct"
+      layerOffset: 0.001
+      y: -14
+      xScl: 1.4
+      yScl: 1.4
+      outline: false
+    }
+  ]
+  
+  // Defensive Abilities - Front and rear shield arcs
+  abilities: [
+    {
+      type: ShieldArcAbility
+      regen: 0.25
+      angle: 80
+      radius: 60
+      whenShooting: false
+      max: 2000
+      angleOffset: 0
+      width: 5
+    }
+    {
+      type: ShieldArcAbility
+      regen: 0.25
+      angle: 80
+      radius: 60
+      whenShooting: false
+      max: 2000
+      angleOffset: 180
+      width: 5
+    }
+  ]
+  
+  // Weapon Systems
+  weapons: [
+    // PRIMARY: Extreme Range Artillery (Very Long Range, Long Cooldown)
+    {
+      name: "toxopid-cannon"
+      x: 0
+      y: 20
+      layerOffset: 0.02
+      rotate: true
+      rotateSpeed: 0.8
+      reload: 900
+      cooldownTime: 150
+      recoil: 14
+      recoilTime: 80
+      shake: 5
+      shootY: 10
+      inaccuracy: 3
+      
+      shoot: {
+        firstShotDelay: 80
+      }
+      chargeSound: loopMalign
+      
+      bullet: {
+        type: ArtilleryBulletType
+        speed: 5.5
+        lifetime: 160
+        range: 480
+        
+        width: 28
+        height: 40
+        
+        damage: 500
+        splashDamage: 800
+        splashDamageRadius: 70
+        buildingDamageMultiplier: 2.0
+        
+        backColor: "98ffa9"
+        frontColor: "ffffff"
+        trailColor: "98ffa9"
+        trailWidth: 7
+        trailLength: 14
+        
+        hitEffect: {
+          type: ExplosionEffect
+          lifetime: 70f
+          waveStroke: 7f
+          waveLife: 24f
+          waveColor: "98ffa9"
+          sparkColor: "98ffa9"
+          smokeColor: "88ff88"
+          waveRad: 80f
+          smokeSize: 9f
+          smokes: 15
+          sparks: 30
+          sparkRad: 80f
+          sparkLen: 7f
+          sparkStroke: 3f
+        }
+        
+        despawnEffect: instBomb
+        
+        // Cluster munitions for area denial
+        fragBullets: 8
+        fragRandomSpread: 45
+        fragLifeMin: 0.4
+        fragLifeMax: 1.2
+        fragBullet: {
+          type: BasicBulletType
+          speed: 3.5
+          lifetime: 50
+          damage: 150
+          splashDamage: 100
+          splashDamageRadius: 30
+          width: 12
+          height: 12
+          backColor: "98ffa9"
+          frontColor: "c7ff98"
+          status: corroded
+          statusDuration: 400
+        }
+        
+        status: corroded
+        statusDuration: 800
+      }
+      
+      shootSound: artilleryShoot
+      parts: [
+        {
+          type: RegionPart
+          name: "toxopid-cannon"
+          outline: false
+          xScl: 1.8
+          yScl: 1.8
+          layerOffset: 0.03
+        }
+        {
+          type: RegionPart
+          name: "large-artillery"
+          y: 6
+          layerOffset: 0.025
+          xScl: 1.4
+          yScl: 1.2
+          outline: false
+        }
+      ]
+    }
+    
+    // SECONDARY: Mid-Range Corrosive Cannons (Slow)
+    {
+      name: "arkyid-weapon"
+      x: 18
+      y: 4
+      layerOffset: 0.005
+      rotate: true
+      rotateSpeed: 2.5
+      reload: 110
+      recoil: 5
+      recoilTime: 40
+      shootY: 8
+      inaccuracy: 6
+      
+      bullet: {
+        type: BasicBulletType
+        speed: 4.5
+        lifetime: 55
+        range: 220
+        
+        width: 14
+        height: 18
+        
+        damage: 95
+        splashDamage: 50
+        splashDamageRadius: 25
+        
+        backColor: "98ffa9"
+        frontColor: "c7ff98"
+        trailColor: "98ffa9"
+        trailWidth: 4
+        trailLength: 10
+        
+        status: corroded
+        statusDuration: 300
+        
+        fragBullets: 4
+        fragBullet: {
+          type: BasicBulletType
+          speed: 3
+          lifetime: 25
+          damage: 35
+          width: 7
+          height: 7
+          status: corroded
+          backColor: "98ffa9"
+        }
+      }
+      
+      shootSound: shootCrawler
+      parts: [
+        {
+          type: RegionPart
+          name: "arkyid-weapon"
+          outline: false
+          xScl: 1.4
+          yScl: 1.4
+        }
+      ]
+    }
+    
+    // Mirror of Secondary
+    {
+      name: "arkyid-weapon"
+      x: -18
+      y: 4
+      layerOffset: 0.005
+      rotate: true
+      rotateSpeed: 2.5
+      reload: 110
+      recoil: 5
+      recoilTime: 40
+      shootY: 8
+      inaccuracy: 6
+      shoot: {
+        firstShotDelay: 55  // Alternates with left cannon
+      }
+      
+      bullet: {
+        type: BasicBulletType
+        speed: 4.5
+        lifetime: 55
+        range: 220
+        
+        width: 14
+        height: 18
+        
+        damage: 95
+        splashDamage: 50
+        splashDamageRadius: 25
+        
+        backColor: "98ffa9"
+        frontColor: "c7ff98"
+        trailColor: "98ffa9"
+        trailWidth: 4
+        trailLength: 10
+        
+        status: corroded
+        statusDuration: 300
+        
+        fragBullets: 4
+        fragBullet: {
+          type: BasicBulletType
+          speed: 3
+          lifetime: 25
+          damage: 35
+          width: 7
+          height: 7
+          status: corroded
+          backColor: "98ffa9"
+        }
+      }
+      
+      shootSound: shootCrawler
+      parts: [
+        {
+          type: RegionPart
+          name: "arkyid-weapon"
+          outline: false
+          xScl: 1.4
+          yScl: 1.4
+        }
+      ]
+    }
+    
+    // TERTIARY: Heavy Laser (Mid Range, Slow)
+    {
+      name: "spiroct-weapon"
+      x: 0
+      y: -8
+      layerOffset: 0.008
+      rotate: true
+      rotateSpeed: 1.8
+      reload: 140
+      cooldownTime: 80
+      recoil: 8
+      shootY: 6
+      
+      bullet: {
+        type: LaserBulletType
+        length: 240
+        width: 30
+        damage: 180
+        
+        lightColor: "98ffa9"
+        hitColor: "98ffa9"
+        
+        status: sapped
+        statusDuration: 240
+        
+        hitEffect: hitLaserBlast
+        shootEffect: shootBigSmoke2
+      }
+      
+      shootSound: laserBigShoot
+      parts: [
+        {
+          type: RegionPart
+          name: "spiroct-weapon"
+          outline: false
+          yScl: 1.6
+          layerOffset: 0.009
+        }
+      ]
+    }
+    
+    // CLOSE DEFENSE: Missile Pods (Mid Range, Slow Burst)
+    {
+      name: "missiles-mount"
+      x: 24
+      y: -14
+      baseRotation: 35
+      shootCone: 140
+      rotate: false
+      
+      reload: 200
+      shoot: {
+        shots: 6
+        shotDelay: 10
+      }
+      
+      bullet: {
+        type: MissileBulletType
+        speed: 3.8
+        lifetime: 70
+        range: 180
+        
+        width: 10
+        height: 14
+        
+        damage: 70
+        splashDamage: 40
+        splashDamageRadius: 28
+        
+        homingPower: 0.1
+        homingRange: 140
+        weaveMag: 2
+        weaveScale: 8
+        
+        trailColor: "98ffa9"
+        backColor: "98ffa9"
+        frontColor: "ffffff"
+      }
+      
+      shootSound: missileLaunch
+    }
+    
+    // Mirror of Close Defense
+    {
+      name: "missiles-mount"
+      x: -24
+      y: -14
+      baseRotation: -35
+      shootCone: 140
+      rotate: false
+      
+      reload: 200
+      shoot: {
+        shots: 6
+        shotDelay: 10
+        firstShotDelay: 30
+      }
+      
+      bullet: {
+        type: MissileBulletType
+        speed: 3.8
+        lifetime: 70
+        range: 180
+        
+        width: 10
+        height: 14
+        
+        damage: 70
+        splashDamage: 40
+        splashDamageRadius: 28
+        
+        homingPower: 0.1
+        homingRange: 140
+        weaveMag: 2
+        weaveScale: 8
+        
+        trailColor: "98ffa9"
+        backColor: "98ffa9"
+        frontColor: "ffffff"
+      }
+      
+      shootSound: missileLaunch
+    }
+  ]
+}

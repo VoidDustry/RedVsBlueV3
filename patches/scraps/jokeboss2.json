@@ -1,0 +1,299 @@
+{
+  "name": "Arachnos boss, made by alphy using toxopid",
+  "unit": {
+    "toxopid": {
+      "localizedName": "Arachnos",
+      "description": "T6 siege arachnid. Deploys devastating siege artillery and corrosive cannons. Moves slowly but annihilates defenses from extreme range.",
+      "details": "Ultimate evolution of the toxopid line. Its siege cannon can level fortifications from across the map.",
+      
+      "speed": 0.25,
+      "health": 78000,
+      "hitSize": 64,
+      "armor": 18,
+      "rotateSpeed": 0.6,
+      "fogRadius": 400,
+      "range": 480,
+      "maxRange": 520,
+      
+      "type": "legs",
+      "legCount": 8,
+      "legLength": 52,
+      "legSpeed": 0.7,
+      "legExtension": 10,
+      "legBaseOffset": 10,
+      "legMoveSpace": 4,
+      "legTrns": 0.7,
+      "legSplashDamage": 100,
+      "legSplashRange": 70,
+      "legGroupSize": 4,
+      "legContinuousMove": true,
+      "legStepHeight": 8,
+      
+      "targetAir": true,
+      "targetGround": true,
+      "hittable": true,
+      "targetable": true,
+      
+      "parts": [
+        {
+          "type": "RegionPart",
+          "name": "toxopid",
+          "xScl": 1.5,
+          "yScl": 1.5,
+          "layerOffset": -0.002,
+          "outline": false
+        },
+        {
+          "type": "RegionPart",
+          "name": "spiroct",
+          "x": 14,
+          "y": 10,
+          "layerOffset": 0.01,
+          "xScl": 1.3,
+          "yScl": 1.3,
+          "rotation": -15
+        },
+        {
+          "type": "RegionPart",
+          "name": "spiroct",
+          "x": -14,
+          "y": 10,
+          "layerOffset": 0.01,
+          "xScl": -1.3,
+          "yScl": 1.3,
+          "rotation": 15
+        },
+        {
+          "type": "RegionPart",
+          "name": "atrax",
+          "y": -16,
+          "xScl": 1.4,
+          "yScl": 1.4,
+          "layerOffset": -0.001,
+          "outline": false
+        },
+        {
+          "type": "RegionPart",
+          "name": "toxopid-leg",
+          "x": 20,
+          "y": 20,
+          "layerOffset": -0.003,
+          "rotation": 45
+        },
+        {
+          "type": "RegionPart",
+          "name": "toxopid-leg",
+          "x": -20,
+          "y": 20,
+          "layerOffset": -0.003,
+          "rotation": -45
+        }
+      ],
+      
+      "weapons": [
+        {
+          "name": "toxopid-weapon",
+          "x": 20,
+          "y": 6,
+          "rotate": true,
+          "rotationLimit": 140,
+          "reload": 120,
+          "recoil": 8,
+          "recoilTime": 80,
+          "recoilPow": 2,
+          "shootSound": "shootBig",
+          "ejectEffect": "casing3",
+          "shake": 2,
+          "bullet": {
+            "type": "BasicBulletType",
+            "damage": 220,
+            "splashDamage": 180,
+            "splashDamageRadius": 45,
+            "speed": 6,
+            "lifetime": 40,
+            "width": 18,
+            "height": 28,
+            "backColor": "9f7aff",
+            "frontColor": "c0ecff",
+            "trailLength": 8,
+            "trailWidth": 3,
+            "status": "sapped",
+            "statusDuration": 240,
+            "hitEffect": "flakExplosion",
+            "despawnEffect": "flakExplosion"
+          }
+        },
+        {
+          "name": "toxopid-weapon",
+          "x": -20,
+          "y": 6,
+          "rotate": true,
+          "rotationLimit": 140,
+          "reload": 120,
+          "recoil": 8,
+          "recoilTime": 80,
+          "recoilPow": 2,
+          "shootSound": "shootBig",
+          "ejectEffect": "casing3",
+          "shake": 2,
+          "bullet": {
+            "type": "BasicBulletType",
+            "damage": 220,
+            "splashDamage": 180,
+            "splashDamageRadius": 45,
+            "speed": 6,
+            "lifetime": 40,
+            "width": 18,
+            "height": 28,
+            "backColor": "9f7aff",
+            "frontColor": "c0ecff",
+            "trailLength": 8,
+            "trailWidth": 3,
+            "status": "sapped",
+            "statusDuration": 240,
+            "hitEffect": "flakExplosion",
+            "despawnEffect": "flakExplosion"
+          }
+        },
+        {
+          "name": "missiles-mount",
+          "x": 12,
+          "y": -8,
+          "rotate": true,
+          "reload": 90,
+          "recoil": 4,
+          "shootSound": "shootHorizon",
+          "shoot": {
+            "shots": 3,
+            "shotDelay": 8
+          },
+          "bullet": {
+            "type": "MissileBulletType",
+            "damage": 85,
+            "speed": 4,
+            "lifetime": 60,
+            "range": 240,
+            "width": 12,
+            "height": 14,
+            "homingPower": 0.12,
+            "homingRange": 180,
+            "trailLength": 10,
+            "trailWidth": 3,
+            "backColor": "f9a07aff",
+            "frontColor": "ffccaa",
+            "splashDamage": 60,
+            "splashDamageRadius": 25
+          }
+        },
+        {
+          "name": "missiles-mount",
+          "x": -12,
+          "y": -8,
+          "rotate": true,
+          "reload": 90,
+          "recoil": 4,
+          "shootSound": "shootHorizon",
+          "shoot": {
+            "shots": 3,
+            "shotDelay": 8
+          },
+          "bullet": {
+            "type": "MissileBulletType",
+            "damage": 85,
+            "speed": 4,
+            "lifetime": 60,
+            "range": 240,
+            "width": 12,
+            "height": 14,
+            "homingPower": 0.12,
+            "homingRange": 180,
+            "trailLength": 10,
+            "trailWidth": 3,
+            "backColor": "f9a07aff",
+            "frontColor": "ffccaa",
+            "splashDamage": 60,
+            "splashDamageRadius": 25
+          }
+        },
+        {
+          "name": "reign-weapon",
+          "x": 0,
+          "y": 12,
+          "rotate": true,
+          "reload": 850,
+          "cooldownTime": 150,
+          "recoil": 15,
+          "recoilTime": 120,
+          "recoilPow": 3,
+          "shake": 6,
+          "chargeSound": "lasercharge",
+          "shootSound": "shockBlast",
+          "shoot": {
+            "firstShotDelay": 150
+          },
+          "bullet": {
+            "type": "ArtilleryBulletType",
+            "damage": 1200,
+            "splashDamage": 900,
+            "splashDamageRadius": 120,
+            "buildingDamageMultiplier": 1.5,
+            "speed": 5,
+            "lifetime": 100,
+            "range": 500,
+            "width": 24,
+            "height": 36,
+            "trailLength": 15,
+            "trailWidth": 6,
+            "trailColor": "ff6b6b",
+            "backColor": "ff4444",
+            "frontColor": "ffaaaa",
+            "hitEffect": {
+              "type": "ExplosionEffect",
+              "lifetime": 60,
+              "waveStroke": 8,
+              "waveLife": 30,
+              "waveColor": "ff4444",
+              "sparkColor": "ffaaaa",
+              "waveRad": 120,
+              "smokeSize": 8,
+              "smokes": 12,
+              "sparks": 20,
+              "sparkRad": 100,
+              "sparkLen": 8,
+              "sparkStroke": 3
+            },
+            "despawnEffect": "massiveExplosion",
+            "status": "melting",
+            "statusDuration": 400,
+            "fragBullets": 6,
+            "fragBullet": {
+              "type": "BasicBulletType",
+              "damage": 150,
+              "speed": 6,
+              "lifetime": 15,
+              "width": 10,
+              "height": 10,
+              "splashDamage": 80,
+              "splashDamageRadius": 30
+            }
+          }
+        }
+      ],
+      
+      "abilities": [
+        {
+          "type": "RegenAbility",
+          "amount": 18,
+          "reload": 240
+        },
+        {
+          "type": "StatusFieldAbility",
+          "effect": "overclock",
+          "duration": 120,
+          "reload": 600,
+          "range": 80
+        }
+      ]
+    }
+  }
+}

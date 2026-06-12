@@ -1,0 +1,696 @@
+name: aranethys boss, author: alphy using Claude Fable 5
+
+unit.evoke: {
+localizedName: Aranethys
+description: "The other giant enemy spider, because crux shall have 2"
+details: "An ancient monster, its carapace hardened by ages of warfare. Each step shakes the earth."
+hideDetails: false
+region: "toxopid"
+cellRegion: "toxopid-cell"
+uiIcon: "unit-toxopid-ui"
+
+flying: false
+
+controller: groundAI
+aiController: GroundAI
+
+type: legs
+legCount: 8
+legLength: 42
+legExtension: -8
+legBaseOffset: 8
+legMoveSpace: 0.8
+legPairOffset: 3
+legLengthScl: 0.95
+legForwardScl: 0.9
+legSpeed: 0.18
+legSplashDamage: 85
+legSplashRange: 32
+rippleScale: 2.5
+stepShake: 1.5
+hovering: true
+shadowElevation: 0.8
+
+legRegion: "arkyid-leg"
+legBaseRegion: "toxopid-leg-base"
+footRegion: "arkyid-foot"
+
+hittable: true
+fogRadius: 300
+coreUnitDock: false
+targetAir: true
+targetGround: true
+playerControllable: true
+logicControllable: true
+targetable: true
+autoFindTarget: true
+useUnitCap: true
+createScorch: true
+
+speed: 0.35
+rotateSpeed: 1
+drag: 0.2
+accel: 0.08
+range: 600
+maxRange: 650
+aimDst: 180
+hitSize: 54
+health: 84000
+armor: 18
+lightRadius: 170
+drownTimeMultiplier: 8
+
+immunities: [sapped, electrified, tarred, burning]
+
+abilities: [
+{
+type: StatusFieldAbility
+effect: overdrive
+duration: 120
+reload: 300
+range: 100
+}
+]
+
+stepSound: mechStepHeavy
+stepSoundPitch: 0.6
+stepSoundVolume: 1
+
+parts: [
+{
+name: "toxopid"
+xScl: 1.2
+yScl: 1.2
+outline: false
+layerOffset: -0.002
+}
+{
+name: "arkyid"
+xScl: 1.1
+yScl: 1.1
+y: -14
+outline: false
+layerOffset: -0.003
+}
+{
+name: "spiroct"
+x: 13
+y: 0
+rotation: -25
+outline: false
+layerOffset: -0.0015
+}
+{
+name: "spiroct"
+x: -13
+y: 0
+rotation: 25
+outline: false
+layerOffset: -0.0015
+}
+{
+name: "toxopid-cannon"
+xScl: 0.8
+yScl: 0.8
+x: 18
+y: 5
+outline: false
+layerOffset: -0.001
+}
+{
+name: "large-purple-mount"
+xScl: 0.6
+yScl: 0.6
+x: 18
+y: 1
+outline: false
+layerOffset: -0.0009
+}
+{
+name: "mount-purple-weapon"
+xScl: 0.5
+yScl: 0.9
+x: 18
+y: 9
+outline: false
+layerOffset: -0.0008
+}
+{
+name: "toxopid-cannon"
+xScl: -0.8
+yScl: 0.8
+x: -18
+y: 5
+outline: false
+layerOffset: -0.001
+}
+{
+name: "large-purple-mount"
+xScl: -0.6
+yScl: 0.6
+x: -18
+y: 1
+outline: false
+layerOffset: -0.0009
+}
+{
+name: "mount-purple-weapon"
+xScl: -0.5
+yScl: 0.9
+x: -18
+y: 9
+outline: false
+layerOffset: -0.0008
+}
+]
+
+weapons: [
+{
+name: "toxopid-cannon"
+top: true
+x: 0
+y: 0
+shootY: 20
+mirror: false
+reload: 450
+recoil: 6
+recoils: 1
+recoilTime: 120
+shake: 8
+shadow: 24
+shootSound: shootReign
+chargeSound: loopMalign
+rotate: true
+rotateSpeed: 0.7
+rotationLimit: 90
+shootCone: 20
+shoot: {
+firstShotDelay: 120
+}
+parts: [
+{
+name: "toxopid-cannon"
+xScl: 1.5
+yScl: 1.5
+outline: false
+layerOffset: 0.001
+}
+{
+name: "large-purple-mount"
+xScl: 1.2
+yScl: 1.2
+y: -8
+outline: false
+layerOffset: 0.0012
+}
+{
+name: "large-purple-mount"
+xScl: 0.7
+yScl: 0.7
+x: 7
+y: 2
+outline: false
+layerOffset: 0.0013
+}
+{
+name: "large-purple-mount"
+xScl: -0.7
+yScl: 0.7
+x: -7
+y: 2
+outline: false
+layerOffset: 0.0013
+}
+{
+name: "toxopid-cannon"
+xScl: 0.8
+yScl: 1.6
+y: 8
+outline: false
+layerOffset: 0.0014
+}
+{
+name: "mount-purple-weapon"
+xScl: 0.9
+yScl: 1.4
+y: 16
+outline: false
+layerOffset: 0.0015
+}
+]
+bullet: {
+type: BasicBulletType
+speed: 10
+lifetime: 60
+damage: 250
+splashDamage: 550
+splashDamageRadius: 60
+width: 32
+height: 40
+hitSize: 24
+layer: 115
+sprite: "large-orb"
+backColor: "665c81"
+frontColor: "c45edd"
+trailColor: "bf92f9"
+trailLength: 18
+trailWidth: 8
+hitEffect: massiveExplosion
+despawnEffect: sapExplosion
+shootEffect: shootTitan
+smokeEffect: shootSmokeTitan
+hitSound: shockwaveTower
+status: melting
+statusDuration: 600
+pierce: true
+pierceBuilding: true
+pierceCap: 4
+pierceArmor: true
+lightning: 6
+lightningLength: 24
+lightningDamage: 50
+lightningColor: "c45edd"
+buildingDamageMultiplier: 1.5
+fragBullets: 6
+fragVelocityMin: 0.3
+fragVelocityMax: 0.8
+fragRandomSpread: 360
+fragBullet: {
+type: basicBulletType
+speed: 2.5
+lifetime: 50
+damage: 20
+width: 12
+height: 12
+shrinkY: 0
+layer: 115
+collidesAir: true
+splashDamage: 45
+splashDamageRadius: 35
+backColor: "665c81"
+frontColor: "bf92f9"
+trailWidth: 3
+trailLength: 6
+trailColor: "bf92f9"
+hitEffect: sapExplosion
+despawnEffect: sapExplosion
+hitSound: shockBullet
+status: sapped
+statusDuration: 240
+knockback: 1
+}
+}
+}
+
+{
+name: "large-purple-mount"
+top: true
+x: 18
+y: 5
+shootY: 8
+reload: 40
+recoil: 2
+recoils: 1
+recoilTime: 30
+shadow: 10
+rotate: true
+rotateSpeed: 2.5
+shootSound: shootBeamPlasma
+shoot: {
+shots: 3
+shotDelay: 4
+}
+parts: [
+{
+name: "large-purple-mount"
+xScl: 1.3
+yScl: 1.2
+outline: false
+layerOffset: 0.0001
+}
+{
+name: "spiroct-weapon"
+xScl: 0.9
+yScl: 0.9
+y: 2
+outline: false
+layerOffset: 0.0002
+}
+{
+name: "mount-purple-weapon"
+xScl: 0.6
+yScl: 1.3
+y: 6
+outline: false
+layerOffset: 0.0003
+}
+]
+bullet: {
+type: LaserBulletType
+length: 260
+width: 22
+damage: 85
+layer: 115
+hitEffect: hitLaserBlast
+hitColor: "c45edd"
+colors: ["bf92f9aa", "c45edd", "ffffff"]
+status: shocked
+statusDuration: 120
+largeHit: true
+sideAngle: 45
+sideWidth: 1
+sideLength: 40
+}
+}
+
+{
+name: "large-purple-mount"
+top: true
+x: -18
+y: 5
+shootY: 8
+reload: 40
+recoil: 2
+recoils: 1
+recoilTime: 30
+shadow: 10
+rotate: true
+rotateSpeed: 2.5
+shootSound: shootBeamPlasma
+shoot: {
+shots: 3
+shotDelay: 4
+firstShotDelay: 20
+}
+parts: [
+{
+name: "large-purple-mount"
+xScl: -1.3
+yScl: 1.2
+outline: false
+layerOffset: 0.0001
+}
+{
+name: "spiroct-weapon"
+xScl: -0.9
+yScl: 0.9
+y: 2
+outline: false
+layerOffset: 0.0002
+}
+{
+name: "mount-purple-weapon"
+xScl: -0.6
+yScl: 1.3
+y: 6
+outline: false
+layerOffset: 0.0003
+}
+]
+bullet: {
+type: LaserBulletType
+length: 260
+width: 22
+damage: 85
+layer: 115
+hitEffect: hitLaserBlast
+hitColor: "c45edd"
+colors: ["bf92f9aa", "c45edd", "ffffff"]
+status: shocked
+statusDuration: 120
+largeHit: true
+sideAngle: 45
+sideWidth: 1
+sideLength: 40
+}
+}
+
+{
+name: "mount-purple-weapon"
+top: true
+x: 10
+y: -12
+shootY: 4
+reload: 18
+recoil: 1
+recoils: 1
+recoilTime: 20
+shadow: 6
+rotate: true
+rotateSpeed: 4
+shootSound: shootMalign
+shootSoundVolume: 0.5
+inaccuracy: 8
+shoot: {
+shots: 4
+shotDelay: 2
+}
+parts: [
+{
+name: "mount-purple-weapon"
+xScl: 1.1
+yScl: 1.1
+outline: false
+layerOffset: 0.0001
+}
+{
+name: "spiroct-weapon"
+xScl: 0.6
+yScl: 1
+y: 3
+outline: false
+layerOffset: 0.0002
+}
+]
+bullet: {
+type: LiquidBulletType
+liquid: oil
+speed: 5
+lifetime: 35
+damage: 12
+layer: 115
+status: tarred
+statusDuration: 180
+puddleSize: 60
+orbSize: 4
+drag: 0.01
+knockback: 0.5
+}
+}
+
+{
+name: "mount-purple-weapon"
+top: true
+x: -10
+y: -12
+shootY: 4
+reload: 18
+recoil: 1
+recoils: 1
+recoilTime: 20
+shadow: 6
+rotate: true
+rotateSpeed: 4
+shootSound: shootMalign
+shootSoundVolume: 0.5
+inaccuracy: 8
+shoot: {
+shots: 4
+shotDelay: 2
+firstShotDelay: 9
+}
+parts: [
+{
+name: "mount-purple-weapon"
+xScl: -1.1
+yScl: 1.1
+outline: false
+layerOffset: 0.0001
+}
+{
+name: "spiroct-weapon"
+xScl: -0.6
+yScl: 1
+y: 3
+outline: false
+layerOffset: 0.0002
+}
+]
+bullet: {
+type: LiquidBulletType
+liquid: oil
+speed: 5
+lifetime: 35
+damage: 12
+layer: 115
+status: tarred
+statusDuration: 180
+puddleSize: 60
+orbSize: 4
+drag: 0.01
+knockback: 0.5
+}
+}
+
+{
+name: "large-purple-mount"
+top: true
+x: 0
+y: -16
+shootY: 8
+mirror: false
+rotate: true
+autoTarget: true
+alwaysShooting: true
+controllable: false
+rotateSpeed: 99999
+targetInterval: 180
+reload: 1200
+shake: 10
+recoil: 8
+recoils: 1
+recoilTime: 90
+shadow: 16
+inaccuracy: 2f
+ejectEffect: casing3
+chargeSound: loopMalign
+shootSound: acceleratorLaunch
+shoot: {
+firstShotDelay: 80
+shots: 1
+}
+parts: [
+{
+name: "large-purple-mount"
+xScl: 1.4
+yScl: 1.4
+outline: false
+layerOffset: 0.0001
+}
+{
+name: "large-purple-mount"
+xScl: 0.9
+yScl: 0.9
+rotation: 45
+outline: false
+layerOffset: 0.0002
+}
+{
+name: "mount-purple-weapon"
+xScl: 0.8
+yScl: 0.8
+outline: false
+layerOffset: 0.0003
+}
+]
+bullet: {
+type: artilleryBulletType
+collidesAir: true
+range: 99999999
+speed: 4
+lifetime: 9999
+width: 34
+height: 34
+layer: 115
+sprite: "large-orb"
+backColor: "665c81"
+frontColor: "c45edd"
+trailColor: "bf92f9"
+trailLength: 24
+trailWidth: 8
+trailEffect: artilleryTrail
+shootEffect: shootTitan
+smokeEffect: shootSmokeTitan
+hitShake: 10
+fragBullets: 1
+fragLifeMin: 2.5
+fragBullet: {
+type: basicBulletType
+speed: 0
+lifetime: 1
+collides: false
+hittable: false
+width: 1
+height: 1
+despawnEffect: none
+fragBullets: 1
+fragVelocityMin: 0
+fragVelocityMax: 0
+fragBullet: {
+type: explosionBulletType
+collidesAir: true
+killShooter: false
+splashDamage: 130
+splashDamageRadius: 110
+buildingDamageMultiplier: 0.5
+status: sapped
+statusDuration: 480
+lightning: 10
+lightningLength: 28
+lightningDamage: 25
+lightningColor: "c45edd"
+hitSound: shockwaveTower
+despawnHit: true
+despawnEffect: {
+type: ExplosionEffect
+lifetime: 60f
+waveStroke: 6f
+waveLife: 30f
+waveColor: "c45edd"
+sparkColor: "bf92f9"
+smokeColor: "665c81"
+waveRad: 110f
+smokeSize: 5f
+smokes: 24
+smokeSizeBase: 0f
+sparks: 34
+sparkRad: 110f
+sparkLen: 6f
+sparkStroke: 2.5f
+}
+fragBullets: 1
+fragVelocityMin: 0
+fragVelocityMax: 0
+fragBullet: {
+type: explosionBulletType
+collidesAir: true
+killShooter: false
+splashDamage: 70
+splashDamageRadius: 110
+buildingDamageMultiplier: 0.5
+status: electrified
+statusDuration: 480
+hitSound: shockBullet
+despawnHit: true
+fragBullets: 12
+fragVelocityMin: 0.8
+fragVelocityMax: 1
+fragRandomSpread: 360
+fragBullet: {
+type: basicBulletType
+speed: 4
+lifetime: 32
+damage: 30
+width: 12
+height: 12
+shrinkY: 0
+layer: 115
+collidesAir: true
+backColor: "665c81"
+frontColor: "bf92f9"
+trailWidth: 3
+trailLength: 7
+trailColor: "bf92f9"
+hitEffect: sapExplosion
+despawnEffect: sapExplosion
+hitSound: shockBullet
+status: electrified
+statusDuration: 240
+}
+}
+}
+}
+}
+}
+]
+}

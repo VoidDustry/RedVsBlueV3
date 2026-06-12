@@ -1,0 +1,312 @@
+{
+  "name": "Venomlord boss, author: destro",
+  "unit": {
+    "evoke": {
+      "type": "legs",
+      "localizedName": "Venomlord",
+      "description": "Elder toxopid. Launches charged plasma orbs at extreme range and sprays corrosive acid at nearby enemies.",
+      "details": "An ancient strain of toxopid, its carapace hardened by ages of warfare. Each step shakes the earth.",
+      "hideDetails": false,
+      "speed": 0.22,
+      "rotateSpeed": 0.8,
+      "drag": 0.2,
+      "accel": 0.08,
+      "health": 95000,
+      "armor": 18,
+      "hitSize": 54,
+      "fogRadius": 80,
+      "drownTimeMultiplier": 8,
+      "stepShake": 2.5,
+      "legCount": 8,
+      "legLength": 42,
+      "legBaseOffset": 12,
+      "legMoveSpeed": 0.8,
+      "legContinuousMove": true,
+      "legLengthScl": 1,
+      "legForwardScl": 1.2,
+      "legPairOffset": 2,
+      "legExtension": -2,
+      "legSplashDamage": 85,
+      "legSplashRange": 32,
+      "allowLegStep": true,
+      "hovering": false,
+      "rippleX": 2,
+      "rippleY": 2,
+      "rippleScale": 2.5,
+      "region": "toxopid",
+      "shadowRegion": "toxopid",
+      "previewRegion": "unit-toxopid-full",
+      "uiIcon": "unit-toxopid-full",
+      "fullIcon": "unit-toxopid-full",
+      "cellRegion": "toxopid-cell",
+      "hittable": true,
+      "targetable": true,
+      "canAttack": true,
+      "targetAir": true,
+      "targetGround": true,
+      "controller": "GroundAI",
+      "aiController": "GroundAI",
+      "range": 600,
+      "maxRange": 600,
+      "aimDst": 180,
+      "parts": [
+        {
+          "type": "RegionPart",
+          "name": "toxopid-cannon",
+          "layerOffset": -0.001,
+          "xScl": 1.3,
+          "yScl": 1.3
+        },
+        {
+          "type": "RegionPart",
+          "name": "toxopid",
+          "layerOffset": -0.002,
+          "xScl": 1.2,
+          "yScl": 1.2
+        },
+        {
+          "type": "RegionPart",
+          "name": "toxopid-cannon",
+          "layerOffset": -0.001,
+          "xScl": 0.8,
+          "yScl": 0.8,
+          "x": 18,
+          "y": 5
+        },
+        {
+          "type": "RegionPart",
+          "name": "toxopid-cannon",
+          "layerOffset": -0.001,
+          "xScl": 0.8,
+          "yScl": 0.8,
+          "x": -18,
+          "y": 5
+        }
+      ],
+      "weapons": [
+        {
+          "name": "toxopid-cannon",
+          "x": 0,
+          "y": 0,
+          "shootY": 18,
+          "reload": 450,
+          "recoil": 6,
+          "recoilTime": 120,
+          "shake": 8,
+          "shootSound": "largeCannon",
+          "chargeSound": "lasercharge2",
+          "rotate": true,
+          "rotateSpeed": 0.7,
+          "rotationLimit": 90,
+          "shootCone": 20,
+          "shoot": {
+            "firstShotDelay": 120
+          },
+          "parts": [
+            {
+              "type": "RegionPart",
+              "name": "toxopid-cannon",
+              "layerOffset": 0.001,
+              "xScl": 1.5,
+              "yScl": 1.5
+            }
+          ],
+          "bullet": {
+            "type": "BasicBulletType",
+            "speed": 10,
+            "lifetime": 60,
+            "damage": 350,
+            "splashDamage": 800,
+            "splashDamageRadius": 60,
+            "width": 32,
+            "height": 40,
+            "hitSize": 24,
+            "sprite": "large-orb",
+            "backColor": "d1efff",
+            "frontColor": "ffffff",
+            "trailColor": "8ca9e8",
+            "trailLength": 18,
+            "trailWidth": 8,
+            "hitEffect": "massiveExplosion",
+            "despawnEffect": "scatheSlash",
+            "shootEffect": "shootTitan",
+            "smokeEffect": "shootSmokeTitan",
+            "hitSound": "explosionbig",
+            "status": "melting",
+            "statusDuration": 600,
+            "pierce": true,
+            "pierceBuilding": true,
+            "pierceCap": 5,
+            "pierceArmor": true,
+            "lightning": 8,
+            "lightningLength": 24,
+            "lightningDamage": 65,
+            "lightningColor": "d1efff",
+            "buildingDamageMultiplier": 2.5,
+            "fragBullets": 6,
+            "fragVelocityMin": 0.3,
+            "fragVelocityMax": 0.8,
+            "fragRandomSpread": 360,
+            "fragBullet": {
+              "type": "LiquidBulletType",
+              "liquid": "slag",
+              "lifetime": 90,
+              "speed": 3,
+              "damage": 25,
+              "status": "melting",
+              "statusDuration": 240,
+              "puddleSize": 120,
+              "orbSize": 6,
+              "drag": 0.02,
+              "knockback": 1.5
+            }
+          }
+        },
+        {
+          "name": "toxopid-weapon",
+          "x": 18,
+          "y": 5,
+          "shootY": 8,
+          "reload": 40,
+          "recoil": 2,
+          "recoilTime": 30,
+          "rotate": true,
+          "rotateSpeed": 2.5,
+          "shootSound": "laser",
+          "shoot": {
+            "shots": 3,
+            "shotDelay": 4
+          },
+          "bullet": {
+            "type": "LaserBulletType",
+            "length": 260,
+            "width": 22,
+            "damage": 85,
+            "hitEffect": "hitLaserBlast",
+            "hitColor": "d1efff",
+            "colors": [
+              "8ca9e8aa",
+              "d1efff",
+              "ffffff"
+            ],
+            "status": "shocked",
+            "statusDuration": 120,
+            "largeHit": true,
+            "sideAngle": 45,
+            "sideWidth": 1,
+            "sideLength": 40
+          }
+        },
+        {
+          "name": "toxopid-weapon",
+          "x": -18,
+          "y": 5,
+          "shootY": 8,
+          "reload": 40,
+          "recoil": 2,
+          "recoilTime": 30,
+          "rotate": true,
+          "rotateSpeed": 2.5,
+          "shootSound": "laser",
+          "shoot": {
+            "shots": 3,
+            "shotDelay": 4
+          },
+          "bullet": {
+            "type": "LaserBulletType",
+            "length": 260,
+            "width": 22,
+            "damage": 85,
+            "hitEffect": "hitLaserBlast",
+            "hitColor": "d1efff",
+            "colors": [
+              "8ca9e8aa",
+              "d1efff",
+              "ffffff"
+            ],
+            "status": "shocked",
+            "statusDuration": 120,
+            "largeHit": true,
+            "sideAngle": 45,
+            "sideWidth": 1,
+            "sideLength": 40
+          }
+        },
+        {
+          "name": "toxopid-weapon-small",
+          "x": 10,
+          "y": -12,
+          "shootY": 4,
+          "reload": 18,
+          "rotate": true,
+          "rotateSpeed": 4,
+          "shootSound": "shootAlt",
+          "inaccuracy": 8,
+          "shoot": {
+            "shots": 4,
+            "shotDelay": 2
+          },
+          "bullet": {
+            "type": "LiquidBulletType",
+            "liquid": "oil",
+            "speed": 5,
+            "lifetime": 35,
+            "damage": 12,
+            "status": "tarred",
+            "statusDuration": 180,
+            "puddleSize": 60,
+            "orbSize": 4,
+            "drag": 0.01,
+            "knockback": 0.5
+          }
+        },
+        {
+          "name": "toxopid-weapon-small",
+          "x": -10,
+          "y": -12,
+          "shootY": 4,
+          "reload": 18,
+          "rotate": true,
+          "rotateSpeed": 4,
+          "shootSound": "shootAlt",
+          "inaccuracy": 8,
+          "shoot": {
+            "shots": 4,
+            "shotDelay": 2
+          },
+          "bullet": {
+            "type": "LiquidBulletType",
+            "liquid": "oil",
+            "speed": 5,
+            "lifetime": 35,
+            "damage": 12,
+            "status": "tarred",
+            "statusDuration": 180,
+            "puddleSize": 60,
+            "orbSize": 4,
+            "drag": 0.01,
+            "knockback": 0.5
+          }
+        }
+      ],
+      "abilities": {
+        "+": [
+          {
+            "type": "ForceFieldAbility",
+            "radius": 90,
+            "regen": 0.8,
+            "max": 2500,
+            "cooldown": 900
+          },
+          {
+            "type": "StatusFieldAbility",
+            "effect": "overdrive",
+            "duration": 120,
+            "reload": 300,
+            "range": 100
+          }
+        ]
+      }
+    }
+  }
+}
