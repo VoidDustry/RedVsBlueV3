@@ -43,20 +43,23 @@ public class Miner {
         Timer.schedule(Miner::renderMiners, 0, 1);
     }
 
-    public static void buyMiner(Player player) {
-        if (players.get(player.uuid()).getScore() < 20) {
+    public static void buyMiner(Player player, Tile tile) {
+        if ((!(players.get(player.uuid()) == null)) && players.get(player.uuid()).getScore() < 20) {
             player.sendMessage(Bundle.format("station.not-enough-money", 20));
         } else {
             if (!minersMap.containsKey(player.uuid())) {
                 if (!player.dead()) {
                     Tile playerTileOn = player.tileOn();
                     Tile tileUnderPlayer = Vars.world.tile(playerTileOn.x, playerTileOn.y - 1);
+                    if (tile == null) {
+                        tile = tileUnderPlayer;
+                    }
 
-                    if (!player.dead() && player.team() == Team.blue && tileUnderPlayer.block().isAir()) {
-                        MinerData minerData = new MinerData(player, tileUnderPlayer);
+                    if ((!player.dead() && player.team() == Team.blue && tile.block().isAir()) && tile.floor() != Blocks.empty) {
+                        MinerData minerData = new MinerData(player, tile);
                         minersMap.put(player.uuid(), minerData);
-                        Call.constructFinish(tileUnderPlayer, Blocks.combustionGenerator, null, (byte) 0, Team.blue, null);
-                        Call.effect(Fx.explosion, tileUnderPlayer.x*8, tileUnderPlayer.y*8, 5, Color.red);
+                        Call.constructFinish(tile, Blocks.pulverizer, null, (byte) 0, Team.blue, null);
+                        Call.effect(Fx.explosion, tile.x*8, tile.y*8, 5, Color.red);
                         players.get(player.uuid()).subtractScore(20);
                     }
                 }
@@ -67,9 +70,9 @@ public class Miner {
     public static void renderMiners() {
         minersMap.forEach((owner, miner) -> {
             if (miner != null) {
-                if (miner.getTileOn().block() == Blocks.air || miner.getOwner().team() != Team.blue) {
+                if (miner.getTileOn().block() != Blocks.pulverizer || miner.getOwner().team() != Team.blue) {
                     minersMap.remove(owner, miner);
-                    if (miner.getTileOn().block() == Blocks.combustionGenerator) {
+                    if (miner.getTileOn().block() == Blocks.pulverizer) {
                         miner.getTileOn().build.kill();
                     }
                 } else {

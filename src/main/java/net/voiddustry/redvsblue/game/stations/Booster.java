@@ -46,7 +46,7 @@ public class Booster {
         Timer.schedule(Booster::renderBoosters, 0, 1);
     }
 
-    public static void buyBooster(Player player) {
+    public static void buyBooster(Player player, Tile tile) {
         if (players.get(player.uuid()).getScore() < 18) {
             player.sendMessage(Bundle.format("station.not-enough-money", Bundle.findLocale(player.locale), 18));
         } else {
@@ -54,12 +54,15 @@ public class Booster {
                 if (!player.dead()) {
                     Tile playerTileOn = player.tileOn();
                     Tile tileUnderPlayer = Vars.world.tile(playerTileOn.x, playerTileOn.y - 1);
+                    if (tile == null) {
+                        tile = tileUnderPlayer;
+                    }
 
-                    if (!player.dead() && player.team() == Team.blue && tileUnderPlayer.block().isAir()) {
-                        StationData boosterData = new StationData(player, tileUnderPlayer);
+                    if ((!player.dead() && player.team() == Team.blue && tile.block().isAir()) && tile.floor() != Blocks.empty) {
+                        StationData boosterData = new StationData(player, tile);
                         boostersMap.put(player.uuid(), boosterData);
-                        Call.constructFinish(tileUnderPlayer, Blocks.beamNode, null, (byte) 0, Team.blue, null);
-                        Call.effect(Fx.regenParticle, tileUnderPlayer.x*8, tileUnderPlayer.y*8, 0, Color.red);
+                        Call.constructFinish(tile, Blocks.beamNode, null, (byte) 0, Team.blue, null);
+                        Call.effect(Fx.regenParticle, tile.x*8, tile.y*8, 0, Color.red);
                         players.get(player.uuid()).subtractScore(18);
                     }
                 }
@@ -70,7 +73,7 @@ public class Booster {
     public static void renderBoosters() {
         boostersMap.forEach((owner, booster) -> {
             if (booster != null) {
-                if (booster.tileOn().block() == Blocks.air || booster.owner().team() != Team.blue) {
+                if (booster.tileOn().block() != Blocks.beamNode || booster.owner().team() != Team.blue) {
                     boostersMap.remove(owner);
                     if (booster.tileOn().block() == Blocks.beamNode) {
                         booster.tileOn().build.kill();

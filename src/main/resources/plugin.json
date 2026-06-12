@@ -6,6 +6,6 @@
     "main": "net.voiddustry.redvsblue.RedVsBluePlugin",
     "hidden": false,
     "java": true,
-    "version": "3.08",
-    "minGameVersion": 153
+    "version": "3.14",
+    "minGameVersion": 158
 }

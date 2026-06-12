@@ -10,6 +10,10 @@ import net.voiddustry.redvsblue.util.Utils;
 public class Admin {
     public static void openAdminPanelMenu(Player player) {
         int menu = Menus.registerMenu((playerInMenu, option) -> {
+            if (option < 0) {
+                return;
+            }
+
             switch (option) {
                 case 0 -> Boss.spawnBoss(Utils.getRandomPlayer(Team.crux));
             }

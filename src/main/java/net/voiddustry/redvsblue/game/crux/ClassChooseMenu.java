@@ -31,8 +31,12 @@ public class ClassChooseMenu {
         });
 
         int menu = Menus.registerMenu((playerInMenu, option) -> {
-            selectedUnit.put(player.uuid(), unitsNumbers[option]);
-            CruxUnit.callSpawn(player);
+            if (option < 0 || option >= unitsNumbers.length) {
+                return;
+            }
+
+            selectedUnit.put(playerInMenu.uuid(), unitsNumbers[option]);
+            CruxUnit.callSpawn(playerInMenu);
         });
 
         Call.menu(player.con, menu, Bundle.get("units.crux.menu.title", player.locale), "", unitsBundleKeys);
@@ -48,8 +52,8 @@ public class ClassChooseMenu {
             case 6 -> units.putAll(StageUnits.sixthStage);
             case 7 -> units.putAll(StageUnits.sevenStage);
             case 8,9 -> units.putAll(StageUnits.eighthAndNinthStage);
-            case 10,11 -> units.putAll(StageUnits.tenthStage);
+            case 10 -> units.putAll(StageUnits.tenthStage);
+            case 11,12 -> units.putAll(StageUnits.eleventhStage);
         }
     }
 }
-

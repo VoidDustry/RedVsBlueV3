@@ -1,6 +1,8 @@
 package net.voiddustry.redvsblue.game.stations;
 
 import arc.graphics.Color;
+import arc.util.Timer;
+import arc.struct.Seq;
 
 import arc.util.Timer;
 import mindustry.Vars;
@@ -23,6 +25,7 @@ import static net.voiddustry.redvsblue.RedVsBluePlugin.players;
 
 public class SuppressorTower {
     private static final Map<String, StationData> suppressorTowerMap = new ConcurrentHashMap<>();
+    private static final Seq<String> suppressorPlaced = new Seq<>();
 
     public static void initTimer() {
         Timer.schedule(() -> suppressorTowerMap.forEach((owner, pointData) -> {
@@ -55,21 +58,30 @@ public class SuppressorTower {
         Timer.schedule(SuppressorTower::renderSuppressorTowers, 0, 0.5F);
     }
 
-    public static void buyTower(Player player) {
+    public static void buyTower(Player player, Tile tile) {
         if (players.get(player.uuid()).getScore() < 20) {
             player.sendMessage(Bundle.format("station.not-enough-money", Bundle.findLocale(player.locale), 20));
         } else {
-            if (!suppressorTowerMap.containsKey(player.uuid())) {
+            if (!suppressorTowerMap.containsKey(player.uuid()) && !suppressorPlaced.contains(player.uuid())) {
                 if (!player.dead()) {
                     Tile playerTileOn = player.tileOn();
                     Tile tileUnderPlayer = Vars.world.tile(playerTileOn.x, playerTileOn.y - 1);
+                    if (tile == null) {
+                        tile = tileUnderPlayer;
+                    }
 
-                    if (!player.dead() && player.team() == Team.blue && tileUnderPlayer.block().isAir()) {
-                        StationData towerData = new StationData(player, tileUnderPlayer);
-                        suppressorTowerMap.put(player.uuid(), towerData);
-                        Call.constructFinish(tileUnderPlayer, Blocks.phaseWall, null, (byte) 0, Team.blue, null);
-                        Call.effect(Fx.regenParticle, tileUnderPlayer.x*8, tileUnderPlayer.y*8, 0, Color.red);
+                    final Tile placeTile = tile;
+                    if ((!player.dead() && player.team() == Team.blue && tile.block().isAir()) && tile.floor() != Blocks.empty) {
+                        Call.constructFinish(tile, Blocks.phaseWall, null, (byte) 0, Team.blue, null);
                         players.get(player.uuid()).subtractScore(20);
+                        StationUtils.drawStationName(tile, player.name + "[gold]'s\n[accent]Suppressor Tower" + " - deploying", 10.5F);
+                        suppressorPlaced.add(player.uuid());
+                        Timer.schedule(() -> {
+                            StationData towerData = new StationData(player, placeTile);
+                            suppressorTowerMap.put(player.uuid(), towerData);
+                            suppressorPlaced.remove(player.uuid());
+                            Call.effect(Fx.regenParticle, placeTile.x*8, placeTile.y*8, 0, Color.red);
+                        }, 10);
                     }
                 }
             }
@@ -79,7 +91,7 @@ public class SuppressorTower {
     public static void renderSuppressorTowers() {
         suppressorTowerMap.forEach((owner, tower) -> {
             if (tower != null) {
-                if (tower.tileOn().block() == Blocks.air || tower.owner().team() != Team.blue) {
+                if (tower.tileOn().block() != Blocks.phaseWall || tower.owner().team() != Team.blue) {
                     suppressorTowerMap.remove(owner);
                     if (tower.tileOn().block() == Blocks.phaseWall) {
                         tower.tileOn().build.kill();
@@ -91,5 +103,6 @@ public class SuppressorTower {
 
     public static void clearTowers() {
         suppressorTowerMap.clear();
+        suppressorPlaced.clear();
     }
 }

@@ -1,9 +1,9 @@
 package net.voiddustry.redvsblue.game.stations;
 
 import arc.graphics.Color;
-import arc.util.Timer;
+import arc.util.*;
 import mindustry.Vars;
-import mindustry.content.Blocks;
+import mindustry.content.*;
 import mindustry.content.Fx;
 import mindustry.game.Team;
 import mindustry.gen.Call;
@@ -54,7 +54,7 @@ public class ArmorWorkbench {
                                     maxShield = p.unit().type.health/3;
                                 } else if (p.unit().type.health <= 290) {
                                     maxShield = p.unit().type.health*4;
-                                } else if (p.unit().type.health >= 11000) {
+                                } else if (p.unit().type == UnitTypes.aegires) {
                                     maxShield = p.unit().type.health/2;
                                 }
     
@@ -62,6 +62,10 @@ public class ArmorWorkbench {
     
                                 float finalMaxShield = maxShield;
                                 int menu = Menus.registerMenu((player, option) -> {
+                                    if (option < 0) {
+                                        return;
+                                    }
+
                                     if (option == 0 && players.get(p.uuid()).getScore() >= 1 && p.unit().shield <= (int) finalMaxShield) {
                                         p.unit().shield = p.unit().shield + shieldPerPoint;
                                         players.get(p.uuid()).subtractScore(1);
@@ -89,7 +93,7 @@ public class ArmorWorkbench {
         Timer.schedule(ArmorWorkbench::renderWorkbenches, 0, 1);
     }
 
-    public static void buyWorkbench(Player player) {
+    public static void buyWorkbench(Player player, Tile tile) {
         if (players.get(player.uuid()).getScore() < 8) {
             player.sendMessage(Bundle.format("station.not-enough-money", Bundle.findLocale(player.locale), 8));
         } else {
@@ -97,12 +101,14 @@ public class ArmorWorkbench {
                 if (!player.dead()) {
                     Tile playerTileOn = player.tileOn();
                     Tile tileUnderPlayer = Vars.world.tile(playerTileOn.x, playerTileOn.y - 1);
-
-                    if (!player.dead() && player.team() == Team.blue && tileUnderPlayer.block().isAir()) {
-                        StationData workbenchData = new StationData(player, tileUnderPlayer);
+                    if (tile == null) {
+                        tile = tileUnderPlayer;
+                    }
+                    if ((!player.dead() && player.team() == Team.blue && tile.block().isAir()) && tile.floor() != Blocks.empty) {
+                        StationData workbenchData = new StationData(player, tile);
                         workbenches.put(player.uuid(), workbenchData);
-                        Call.constructFinish(tileUnderPlayer, Blocks.radar, null, (byte) 0, Team.blue, null);
-                        Call.effect(Fx.regenParticle, tileUnderPlayer.x * 8, tileUnderPlayer.y * 8, 0, Color.red);
+                        Call.constructFinish(tile, Blocks.radar, null, (byte) 0, Team.blue, null);
+                        Call.effect(Fx.regenParticle, tile.x * 8, tile.y * 8, 0, Color.red);
                         players.get(player.uuid()).subtractScore(8);
                     }
                 }
@@ -113,7 +119,7 @@ public class ArmorWorkbench {
     public static void renderWorkbenches() {
         workbenches.forEach((owner, workbench) -> {
             if (workbench != null) {
-                if (workbench.tileOn().block() == Blocks.air || workbench.owner().team() != Team.blue) {
+                if (workbench.tileOn().block() != Blocks.radar || workbench.owner().team() != Team.blue) {
                     workbenches.remove(owner);
                     if (workbench.tileOn().block() == Blocks.radar) {
                         workbench.tileOn().build.kill();

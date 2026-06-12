@@ -2,26 +2,29 @@ package net.voiddustry.redvsblue.util;
 
 import arc.graphics.Color;
 
+import arc.*;
 import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.Timer;
+import arc.util.serialization.*;
 import mindustry.Vars;
 import mindustry.content.*;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.game.Team;
 import mindustry.gen.*;
+import mindustry.io.JsonIO;
 
 import mindustry.type.UnitType;
 import java.util.Locale;
+import java.util.HashMap;
 
 import mindustry.type.Weapon;
 import mindustry.world.Block;
 import mindustry.world.blocks.environment.*;
+import mindustry.world.meta.BuildVisibility;
 
 import net.voiddustry.redvsblue.Bundle;
 import net.voiddustry.redvsblue.PlayerData;
-import net.voiddustry.redvsblue.game.building.BlocksTypes;
-import net.voiddustry.redvsblue.game.building.BuildBlock;
 import net.voiddustry.redvsblue.game.crux.StageUnits;
 import net.voiddustry.redvsblue.game.starting_menu.StartingItems;
 import net.voiddustry.redvsblue.game.starting_menu.StartingMenu;
@@ -39,15 +42,33 @@ public class Utils {
     public static int money_per_min = 3;
 
     public static void initRules() {
-        for ( Block block : Vars.content.blocks()) {
+
+        state.rules.bannedBlocks.clear();
+        state.rules.revealedBlocks.clear();
+
+        for (Block block : Vars.content.blocks()) {
             state.rules.bannedBlocks.add(block);
+            for(int i = 0; i < block.requirements.length; i++){
+                if (block.requirements[i].item==Items.dormantCyst) {
+                    state.rules.bannedBlocks.remove(block);
+                    state.rules.revealedBlocks.add(block);
+                    
+                    break;
+                }
+            }
         }
+        
+        state.rules.buildSpeedMultiplier = 0;
+
+        state.rules.env = Vars.defaultEnv;
+        state.rules.planet = Planets.sun;
 
         state.rules.waveSpacing = Integer.MAX_VALUE;
         state.rules.waves = true;
         state.rules.bannedUnits.add(UnitTypes.alpha);
 
         state.rules.hideBannedBlocks = true;
+        state.rules.blockWhitelist = false;
 
         state.rules.teams.get(Team.malis).blockHealthMultiplier = 2;
 
@@ -73,7 +94,6 @@ public class Utils {
     }
 
     public static void loadContent() {
-        BlocksTypes.load();
         StartingItems.load();
     }
 
@@ -85,12 +105,11 @@ public class Utils {
         ArmorWorkbench.initTimer();
         Recycler.initTimer();
         SuppressorTower.initTimer();
-        BuildBlock.init();
 
         Timer.schedule(() -> {
             if (playing) {
                 Groups.player.each(p -> {
-                    if (p.team() == Team.blue && (!(((Integer)players.get(p.uuid()).getScore()) == null))) {
+                    if (p.team() == Team.blue && (!(players.get(p.uuid()) == null)) && (!(((Integer)players.get(p.uuid()).getScore()) == null))) {
                         players.get(p.uuid()).setScore(players.get(p.uuid()).getScore() + money_per_min);
                         p.sendMessage(Bundle.format("game.salary", Bundle.findLocale(p.locale), money_per_min));
 
@@ -225,7 +244,7 @@ public class Utils {
                 return UnitTypes.nova;
             }
             case 7, 8 -> {
-                return UnitTypes.elude;
+                return UnitTypes.merui;
             }
             case 9 -> {
                 return UnitTypes.flare;

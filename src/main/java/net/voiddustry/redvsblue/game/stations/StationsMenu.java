@@ -10,14 +10,18 @@ public class StationsMenu {
     public static void openMenu(Player player) {
         if (!player.dead() && player.team() == Team.blue) {
             int menu = Menus.registerMenu((player1, option) -> {
+                if (option < 0) {
+                    return;
+                }
+
                 switch (option) {
-                    case 0 -> SuppressorTower.buyTower(player);
-                    case 1 -> Miner.buyMiner(player);
-                    case 2 -> RepairPoint.buyRepairPoint(player);
-                    case 3 -> ArmorWorkbench.buyWorkbench(player);
-                    case 4 -> Laboratory.buyLab(player);
-                    case 5 -> Recycler.buyRecycler(player);
-                    case 6 -> Booster.buyBooster(player);
+                    case 0 -> SuppressorTower.buyTower(player, null);
+                    case 1 -> Miner.buyMiner(player, null);
+                    case 2 -> RepairPoint.buyRepairPoint(player, null);
+                    case 3 -> ArmorWorkbench.buyWorkbench(player, null);
+                    case 4 -> Laboratory.buyLab(player, null);
+                    case 5 -> Recycler.buyRecycler(player, null);
+                    case 6 -> Booster.buyBooster(player, null);
                 }
             });
 

@@ -25,6 +25,10 @@ public class StartingMenu {
         NetConnection connection = player.con;
         if (canOpenMenu) {
             int menu = Menus.registerMenu((player1, option) -> {
+                if (option < 0) {
+                    return;
+                }
+
                 if (option <= 3) {
                     switch (option) {
                         case 0 -> openMenu(player, 0);

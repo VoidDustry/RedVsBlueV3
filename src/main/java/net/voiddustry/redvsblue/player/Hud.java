@@ -5,6 +5,7 @@ import mindustry.content.UnitTypes;
 import mindustry.game.Team;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
+import mindustry.logic.LAccess;
 import mindustry.Vars;
 
 import mindustry.gen.Unit;
@@ -20,8 +21,6 @@ import static net.voiddustry.redvsblue.util.Utils.playerCount;
 public class Hud {
     public static void update() {
 
-        CruxUnit.checkUnitCount();
-
         int minutes = (int) Math.floor(RedVsBluePlugin.stageTimer / 60);
         int seconds = (int) (RedVsBluePlugin.stageTimer - minutes * 60);
 
@@ -34,7 +33,7 @@ public class Hud {
 
         Groups.unit.each(u -> {
             if (u.team == Team.crux) {
-                u.ammo = u.type.ammoCapacity;
+                u.setProp(LAccess.ammo, u.type.ammoCapacity);
             }
 
         });

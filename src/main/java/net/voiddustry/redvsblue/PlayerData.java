@@ -20,6 +20,8 @@ public class PlayerData {
     private int level;
     private int exp;
     private int maxExp;
+    private double lastEvolutionTime;
+    private double lastRedeemTime;
 
     public PlayerData(String name, String uuid, String ip, Unit unit, Team team, Integer evolutionStage, Integer level, Integer exp, Integer maxExp) {
         this.name = name;
@@ -35,11 +37,13 @@ public class PlayerData {
         this.selectedBoss = UnitTypes.mace;
         this.level = 1;
         this.exp = 0;
-        this.maxExp = 20;
+        this.maxExp = 35;
+        this.lastEvolutionTime = 0;
+        this.lastRedeemTime = 0;
     }
 
     public PlayerData(Player player) {
-        this(player.name(), player.uuid(), player.ip(), null, player.team(), 0, 1, 0, 20);
+        this(player.name(), player.uuid(), player.ip(), null, player.team(), 0, 1, 0, 35);
     }
 
     public String getName() {
@@ -60,6 +64,13 @@ public class PlayerData {
 
     public Team getTeam() {
         return team;
+    }
+
+    public double getLastEvolutionTime() {
+        return lastEvolutionTime;
+    }
+    public double getLastRedeemTime() {
+        return lastRedeemTime;
     }
 
     public void addScore(int amount) {
@@ -157,5 +168,12 @@ public class PlayerData {
 
     public void setMaxExp(int amount) {
         this.maxExp = amount;
+    }
+    
+    public void setLastEvolutionTime(double time) {
+        this.lastEvolutionTime = time;
+    }
+    public void setLastRedeemTime(double time) {
+        this.lastRedeemTime = time;
     }
 }

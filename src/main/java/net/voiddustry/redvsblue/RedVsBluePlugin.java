@@ -1,10 +1,18 @@
 package net.voiddustry.redvsblue;
 
 import arc.Events;
+import arc.Core;
+import arc.files.Fi;
+import arc.struct.Seq;
+import arc.util.Log;
+import arc.util.serialization.Jval;
+import arc.util.serialization.Jval.*;
+
 
 import arc.graphics.Color;
 import arc.struct.Seq;
 import arc.util.*;
+import arc.math.*;
 import mindustry.Vars;
 import mindustry.type.unit.*;
 import mindustry.ai.Pathfinder;
@@ -13,6 +21,7 @@ import mindustry.content.Blocks;
 import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
 import mindustry.content.UnitTypes;
+import mindustry.type.*;
 import mindustry.game.EventType;
 import mindustry.game.Team;
 import mindustry.gen.*;
@@ -20,6 +29,7 @@ import mindustry.mod.Plugin;
 import mindustry.type.UnitType;
 import mindustry.ui.Menus;
 import mindustry.world.Tile;
+import mindustry.net.*;
 import net.voiddustry.redvsblue.admin.Admin;
 import net.voiddustry.redvsblue.ai.AirAI;
 import net.voiddustry.redvsblue.ai.BluePlayerTarget;
@@ -29,8 +39,8 @@ import net.voiddustry.redvsblue.evolution.Evolution;
 import net.voiddustry.redvsblue.evolution.Evolutions;
 import net.voiddustry.redvsblue.game.crux.*;
 import net.voiddustry.redvsblue.game.stations.StationsMenu;
-import net.voiddustry.redvsblue.game.building.BuildBlock;
-import net.voiddustry.redvsblue.game.building.BuildMenu;
+import net.voiddustry.redvsblue.game.stations.Laboratory;
+import net.voiddustry.redvsblue.game.building.UpdateConstructBlocks;
 import net.voiddustry.redvsblue.game.starting_menu.StartingMenu;
 import net.voiddustry.redvsblue.game.stations.*;
 import net.voiddustry.redvsblue.game.units.SpecialUnits;
@@ -44,6 +54,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
 import java.lang.Math;
+import java.time.Instant;
 
 import static net.voiddustry.redvsblue.util.MapVote.callMapVoting;
 import static net.voiddustry.redvsblue.util.Utils.*;
@@ -69,17 +80,58 @@ public class RedVsBluePlugin extends Plugin {
     public static float stageTimer = 0;
     public static boolean playing = false;
 
+    public static boolean stage11 = false;
 
+    public int restartCounter = 0;
+    public int gamesUntilRestart = 2000000;
 
     static Timer.Task task = new Timer.Task() {
         @Override
         public void run() {
-            stage++;
-            stageTimer = 300;
-            spawnBoss();
-            announceBundled("game.new-stage", 15, stage);
-            ClassChooseMenu.updateUnitsMap();
-            if (stage >= 11) {
+            if (stage != 10) {
+                stage++;
+                stageTimer = 300;
+                spawnBoss();
+                announceBundled("game.new-stage", 15, stage);
+                ClassChooseMenu.updateUnitsMap();
+            } else {
+                 //calculate blue unit value for stage 11
+                int blueUnitValue = 0;
+                float typeModifier = 1;
+                for (Unit u : Groups.unit) {
+                    if (u.team==Team.blue) {
+                        typeModifier = 1;
+                        if (u.type == UnitTypes.quad) {
+                            typeModifier = 2;
+                        } else if (u.type == UnitTypes.sei) {
+                            typeModifier = 2;
+                        } else if (u.type == UnitTypes.aegires) {
+                            typeModifier = 3;
+                        } else if (u.type == UnitTypes.omura) {
+                            typeModifier = 2;
+                        } else if (u.type == UnitTypes.navanax) {
+                            typeModifier = 1.5f;
+                        }
+                        blueUnitValue = blueUnitValue + ((int)(u.type.health*typeModifier));
+                    }
+                }
+                Log.info("Blue unit value for stage 11: " + blueUnitValue);
+                if (blueUnitValue < 100000) {
+                gameOver(Team.blue);
+                } else {
+                    stage11 = true;
+                    announceBundled("game.stage11", 5);
+                    Timer timer = new Timer();
+                    timer.schedule(() -> {
+                        stage++;
+                        stageTimer = 300;
+                        spawnBoss();
+                        announceBundled("game.new-stage", 15, 11);
+                        ClassChooseMenu.updateUnitsMap();
+                    }, 6);
+                }
+            }
+            if (stage >= 12) {
                 gameOver(Team.blue);
             }
         }
@@ -89,7 +141,8 @@ public class RedVsBluePlugin extends Plugin {
     public void init() {
 
         Log.info("&gRedVsBlue Plugin &rStarted!");
-        
+
+
         Utils.initRules();
         Utils.initTimers();
         Utils.loadContent();
@@ -97,6 +150,11 @@ public class RedVsBluePlugin extends Plugin {
         SpawnEffect.initEffect();
         Boss.forEachBoss();
         Premium.init();
+        CruxUnit.addEvent();
+
+        Fi poolDir = Vars.dataDirectory.child("bosses");
+        poolDir.mkdirs();
+        
 
         for (UnitType unit : Vars.content.units()) {
             if (unit == UnitTypes.crawler) {
@@ -127,6 +185,7 @@ public class RedVsBluePlugin extends Plugin {
                 } else {
                     players.put(player.uuid(), new PlayerData(player));
                     PlayerData data = players.get(player.uuid());
+                    Vars.world.tile(((int)blueSpawnX)/8,((int)blueSpawnY)/8).setNet(Blocks.air,Team.derelict,0);
                     Unit unit = getStartingUnit().spawn(Team.blue, blueSpawnX, blueSpawnY);
 
                     data.setUnit(unit);
@@ -143,7 +202,6 @@ public class RedVsBluePlugin extends Plugin {
         });
 
         Events.on(EventType.PlayerChatEvent.class, event -> {
-            Call.sound(Sounds.chatMessage, 2, 2, 1);
             if (Utils.voting) {
                 if (Strings.canParseInt(event.message)) {
                     MapVote.registerVote(event.player, Strings.parseInt(event.message));
@@ -154,6 +212,12 @@ public class RedVsBluePlugin extends Plugin {
         //kill credit
         HashMap<Unit, Unit> spawnedUnitOwnership = new HashMap<>();
         HashMap<Unit, Player> killCredit = new HashMap<>();
+
+        //situations where kills should not be registered
+        StatusEffect noRegisterKills = new StatusEffect("noRegisterKills") {{
+            show = false;
+        }};
+        
 
         Events.on(EventType.UnitDamageEvent.class, event -> {
             if (event.unit != null && event.bullet.owner() instanceof Unit damager) {
@@ -171,30 +235,39 @@ public class RedVsBluePlugin extends Plugin {
             }
         });
 
+        Events.on(EventType.PlayEvent.class, event -> {
+            Utils.initRules();
+        });
+
         
         //blue kill registration
         Events.on(EventType.UnitDestroyEvent.class, event -> {
-            Player killerPlayer = killCredit.get(event.unit);
-            killCredit.remove(event.unit);
             
-            if (killerPlayer == null) {
-                float minDist = 69420;
-                for (Player p : Groups.player) {
-                    if (((!(p.unit() == null)) && event.unit.dst(p)<minDist) && (!(event.unit.team == p.team()))) {
-                        if (event.unit.dst(p) < ((p.unit().type.range)*1.2+p.unit().type.speed*8))
-                            killerPlayer=p;
-                            minDist = event.unit.dst(p);
+            if (!(event.unit.hasEffect(Vars.content.statusEffect("noRegisterKills"))) && !(event.unit.type instanceof MissileUnitType)) {
+                Player killerPlayer = killCredit.get(event.unit);
+                killCredit.remove(event.unit);
+                
+                if (killerPlayer == null) {
+                    float minDist = 69420;
+                    for (Player p : Groups.player) {
+                        if (((!(p.unit() == null)) && event.unit.dst(p)<minDist) && (!(event.unit.team == p.team()))) {
+                            if (event.unit.dst(p) < ((p.unit().type.range)*1.2+p.unit().type.speed*8))
+                                killerPlayer=p;
+                                minDist = event.unit.dst(p);
+                        }
                     }
                 }
-            }
-            
-            if (killerPlayer != null) {
-                if (killerPlayer.team() == Team.blue) {
-                    PlayerData data = players.get(killerPlayer.uuid());
-                    players.get(killerPlayer.uuid()).addScore(data.getLevel());
-                    Call.label(killerPlayer.con, "[lime]+" + data.getLevel(), 2, event.unit.x, event.unit.y);
-                    data.addExp(1);
-                    processLevel(killerPlayer, data);
+                
+                if (killerPlayer != null) {
+                    if (killerPlayer.team() == Team.blue) {
+                        PlayerData data = players.get(killerPlayer.uuid());
+                        if (!(data == null)) {
+                            players.get(killerPlayer.uuid()).addScore(data.getLevel());
+                            Call.label(killerPlayer.con, "[lime]+" + data.getLevel(), 2, event.unit.x, event.unit.y);
+                            data.addExp(1);
+                            processLevel(killerPlayer, data);
+                        }
+                    }
                 }
             }
         });
@@ -204,10 +277,12 @@ public class RedVsBluePlugin extends Plugin {
             if (event.unit != null && event.bullet.owner() instanceof Unit killer) {
                 if (killer.isPlayer() && killer.team == Team.crux) {
                     PlayerData data = players.get(killer.getPlayer().uuid());
-                    data.addKill();
-                    Call.label(killer.getPlayer().con, "[scarlet]+1", 2, event.unit.x, event.unit.y);
-                    if (data.getKills() >= 2) {
-                        Boss.spawnBoss(killer.getPlayer());
+                    if (!(data == null)) {
+                        data.addKill();
+                        Call.label(killer.getPlayer().con, "[scarlet]+1", 2, event.unit.x, event.unit.y);
+                        if (data.getKills() >= 2) {
+                            Boss.spawnBoss(killer.getPlayer());
+                        }
                     }
 
                 }
@@ -215,6 +290,28 @@ public class RedVsBluePlugin extends Plugin {
         });
 
         Events.on(EventType.BlockDestroyEvent.class, event -> {
+        });
+
+        //random boss
+        Events.on(EventType.ContentPatchLoadEvent.class, event -> {
+            Seq<Fi> pool = poolDir.findAll(f -> true);
+
+            if(pool.isEmpty()){
+                Log.info("No boss patch files found.");
+                return;
+            }
+
+            Fi chosen = pool.random();
+
+            try{
+                String patchText = Jval.read(chosen.readString()).toString(Jformat.plain);
+
+                event.patches.addUnique(patchText);
+
+                Log.info("Selected random patch: @", chosen.name());
+            }catch(Throwable t){
+                Log.info("Invalid random patch file: @", chosen.name(), t);
+            }
         });
 
 
@@ -228,9 +325,11 @@ public class RedVsBluePlugin extends Plugin {
                 if (event.unit.team() == Team.blue) {
                     event.unit.getPlayer().team(Team.crux);
                     PlayerData data = players.get(event.unit.getPlayer().uuid());
-                    data.setTeam(Team.crux);
-                    data.setScore(0);
-                    data.setKills(0);
+                    if (!(data == null)) {
+                        data.setTeam(Team.crux);
+                        data.setScore(0);
+                        data.setKills(0);
+                    }
 
                     UnitTypes.renale.spawn(Team.malis, event.unit.x, event.unit.y).kill();
 
@@ -258,6 +357,9 @@ public class RedVsBluePlugin extends Plugin {
 
 
 
+
+        
+
         Events.on(EventType.WorldLoadEvent.class, event -> {
             Miner.clearMiners();
             RepairPoint.clearPoints();
@@ -266,7 +368,6 @@ public class RedVsBluePlugin extends Plugin {
             ArmorWorkbench.clearWorkbenches();
             Recycler.clearRecyclers();
             SuppressorTower.clearTowers();
-            BuildBlock.clear();
             Boss.bosses.clear();
 
             initRules();
@@ -276,11 +377,22 @@ public class RedVsBluePlugin extends Plugin {
 
             Groups.player.each(p -> {
                 PlayerData data = players.get(p.uuid());
-                data.setUnit(null);
-                data.setExp(0);
-                data.setLevel(1);
-                data.setScore(0);
+                if (!(data == null)) {
+                    data.setUnit(null);
+                    data.setExp(0);
+                    data.setLevel(1);
+                    data.setScore(0);
+                }
             });
+            Log.info("Games until restart: "+(gamesUntilRestart-restartCounter));
+            restartCounter = restartCounter+1;
+            if (restartCounter >= gamesUntilRestart) {
+                Log.info("[scarlet]The server is restarting");
+                //net.dispose(); where do you find this mythical method
+                Groups.player.each(p -> p.kick("[scarlet]Server is restarting"));
+                System.exit(0);
+            }
+            
         });
 
         Events.on(EventType.WorldLoadEvent.class, event -> Timer.schedule(() -> {
@@ -290,12 +402,21 @@ public class RedVsBluePlugin extends Plugin {
             Vars.state.rules.canGameOver = false;
             Vars.state.rules.unitCap = 32;
 
+            Timer.schedule(() -> {
+                UpdateConstructBlocks updateConstructBlocks = new UpdateConstructBlocks();
+                Timer.schedule(updateConstructBlocks, 10f, 0.2f);
+                Vars.state.rules.bannedBlocks.clear();
+                initRules();
+            }, 0.5f);
+
             Building core = Vars.state.teams.cores(Team.blue).first();
 
             redSpawns.clear();
 
             blueSpawnX = core.x();
             blueSpawnY = core.y();
+
+            stage11 = false;
 
             Vars.state.teams.cores(Team.blue).each(Building::kill);
 
@@ -311,6 +432,7 @@ public class RedVsBluePlugin extends Plugin {
 
             Timer timer = new Timer();
             timer.scheduleTask(task, 300, 300);
+
 
             Groups.player.each(player -> {
                 if (player != null) {
@@ -329,7 +451,7 @@ public class RedVsBluePlugin extends Plugin {
             gameover = false;
             hardcore = false;
             stage = 1;
-            stageTimer = 420;
+            stageTimer = 300;
             voting = false;
             StartingMenu.canOpenMenu = true;
 
@@ -340,11 +462,18 @@ public class RedVsBluePlugin extends Plugin {
             launchGameStartTimer();
 
             spawnedUnitOwnership.clear();
+            killCredit.clear();
 
 
             Call.setRules(Vars.state.rules);
 
+
         }, 10));
+
+    //    StatusEffect superShielded = new StatusEffect("superShielded") {{
+       //     show = false;
+        //    healthMultiplier = 9;
+       // }};
 
         Events.run(EventType.Trigger.update, () -> {
             tick++;
@@ -367,6 +496,9 @@ public class RedVsBluePlugin extends Plugin {
                     });
                     RedVsBluePlugin.redSpawns.remove(RedVsBluePlugin.redSpawns.firstOpt());  
                 }
+                
+
+                CruxUnit.checkUnitCount();
 
                 if(tick%3==0){
 
@@ -390,12 +522,6 @@ public class RedVsBluePlugin extends Plugin {
                         }
                     }
                 }
-    
-                    Groups.bullet.forEach(bullet -> {
-                        if (bullet.lifetime == 59f){
-                            Call.effect(Fx.shootHeal, bullet.x, bullet.y, bullet.rotation(), Color.cyan);
-                        }
-                    });
                 }
             }
         });
@@ -413,7 +539,21 @@ public class RedVsBluePlugin extends Plugin {
                 String[][] buttons = new String[evolution.evolutions.length][1];
 
                 for (int i = 0; i < evolution.evolutions.length; i++) {
-                    buttons[i][0] = Bundle.format("menu.evolution.evolve", locale, evolution.evolutions[i], Evolutions.evolutions.get(evolution.evolutions[i]).cost);
+                    float multiplier = Laboratory.getMultiplier(evolution.evolutions[i], player);
+                    int cost = (int)(Evolutions.evolutions.get(evolution.evolutions[i]).cost*multiplier);
+
+                    String textColor = "";
+
+                    if (multiplier > 1 && multiplier <= 1.99) {
+                        textColor = "[orange]";
+                    } else if (cost>Evolutions.evolutions.get(evolution.evolutions[i]).cost) {
+                        textColor = "[red]";
+                    } else if (cost<Evolutions.evolutions.get(evolution.evolutions[i]).cost) {
+                        textColor = "[green]";
+                    } else {
+                        textColor = "[yellow]";
+                    }
+                    buttons[i][0] = Bundle.format("menu.evolution.evolve", locale, evolution.evolutions[i],(textColor+cost+" - "+(multiplier*100)+"%"));
                 }
 
                 Call.menu(player.con, Laboratory.evolutionMenu, Bundle.get("menu.evolution.title", locale), Bundle.format("menu.evolution.message", locale, players.get(player.uuid()).getEvolutionStage(), Bundle.get("evolution.branch.initial", locale)), buttons);
@@ -423,11 +563,11 @@ public class RedVsBluePlugin extends Plugin {
 //            Log.info(StartingMenu.canOpenMenu);
 //            StartingMenu.openMenu(player, 0);
 //        });
-        handler.<Player>register("b", "Open Building menu", (args, player) -> {
-            if (playing && player.team() == Team.blue) {
-                BuildMenu.openMenu(player);
-            }
-        });
+       // handler.<Player>register("b", "Open Building menu", (args, player) -> {
+          //  if (playing && player.team() == Team.blue) {
+              //  BuildMenu.openMenu(player);
+            //}
+       // });
 
         handler.<Player>register("bc", "Boss select menu", (args, player) -> {
             if (playing) {
@@ -459,6 +599,40 @@ public class RedVsBluePlugin extends Plugin {
             }
 
         });
+        
+        handler.<Player>register("list-pinned-maps", "[scarlet]Admin only", (args, player) -> {
+            if (player.admin) {
+                try {
+                    String mapList = "";
+                    for (String mn : MapVote.pinnedMaps) {
+                        mapList = mapList+"\n"+mn;
+                    }
+                    player.sendMessage(mapList);
+                } catch (Exception e) {
+                    player.sendMessage("Failed to list pinned maps" + e);
+                }
+            }
+        });
+
+        handler.<Player>register("pin-map","<filename>", "[scarlet]Admin only", (args, player) -> {
+            if (player.admin) {
+                try {
+                    MapVote.pinnedMaps.add(args[0].trim());
+                } catch (Exception e) {
+                    player.sendMessage("Failed to pin a map" + e);
+                }
+            }
+        });
+
+        handler.<Player>register("clear-pinned-maps", "[scarlet]Admin only", (args, player) -> {
+            if (player.admin) {
+                try {
+                    MapVote.pinnedMaps.clear();
+                } catch (Exception e) {
+                    player.sendMessage("Failed to clear pinned maps" + e);
+                }
+            }
+        });
 
         handler.<Player>register("gameover", "Only for admins", (args, player) -> {
             if (player.admin) {
@@ -468,7 +642,7 @@ public class RedVsBluePlugin extends Plugin {
         });
 
         handler.<Player>register("blue", "Makes you blue, works only before stage 3", (args, player) -> {
-            if (stage <= 3 && playing && player.team() != Team.blue) {
+            if (stage <= 3 && playing && player.team() != Team.blue && players.get(player.uuid()).getLastRedeemTime()+45<Instant.now().getEpochSecond()) {
                 Unit oldUnit = player.unit();
 
                 if (player.unit() != null) oldUnit.kill();
@@ -480,6 +654,7 @@ public class RedVsBluePlugin extends Plugin {
 
                 data.setUnit(unit);
                 player.unit(unit);
+                data.setLastRedeemTime(Instant.now().getEpochSecond());
                 sendBundled("game.redeemed", player.name);
             } else {
                 player.sendMessage(Bundle.get("game.late", player.locale));
@@ -487,7 +662,8 @@ public class RedVsBluePlugin extends Plugin {
         });
         
         handler.<Player>removeCommand("rtv");
-        
+        handler.<Player>removeCommand("observer");
+        handler.<Player>removeCommand("spectator");
 //        handler.<Player>register("reset-data", "Use that if you blue and dont have unit.", (args, player) -> {
 //            if (player.team() == Team.blue) {
 //                players.put(player.uuid(), new PlayerData(player));
@@ -505,8 +681,52 @@ public class RedVsBluePlugin extends Plugin {
 //            }
 //        });
 
-        handler.register("restart", "ae", (args) -> Groups.player.each(p -> p.kick("[scarlet]Server is going to restart")));
-    }
+        handler.register("setpoints", "[number] [playername...]",  "give people money, or take it(better), admin abuse, breaks capitalism, evil", (args) -> {
+            try {
+                Player player = null;
+                for (Player p : Groups.player) {
+                    if (p.name.contains(args[1].trim())) {
+                        player = p;
+                    }
+                }
+                players.get(player.uuid()).setScore(Integer.parseInt(args[0]));
+                Log.info("Gave " + args[0] + " points to player " + player.name);
+            } catch (Exception e) {
+                Log.info("An error occured while executing the command");
+                e.printStackTrace();
+            }
+        });
+
+        handler.register("restart", "now actually works", (args) -> {
+            Groups.player.each(p -> p.kick("[scarlet]Server is restarting"));
+            Log.info("Server is restarting");
+            System.exit(0);
+        });
+        
+        handler.register("setstage","<number>" ,"Sets rvsb stage", (args) -> {
+            try {
+                stage = Integer.parseInt(args[0])-1;
+                task.run();
+            } catch (Exception e) {
+                Log.info("Failed to set stage");
+            }
+        });
+
+        
+        handler.register("autorestart", "<yes/no> <gamesUntilRestart>", "self explanatory", (args) -> {
+            try {
+                if (args[0].trim().contains("yes")) {
+                    Log.info("Games until restart: "+Integer.parseInt(args[1]));
+                    gamesUntilRestart = Integer.parseInt(args[1]);
+                } else {
+                    Log.info("Autorestart disabled");
+                    gamesUntilRestart = 2000000;
+                }
+            } catch (Exception e) {
+                Log.info("A mysterious error has appeared while executing the command");
+            }
+        });
+    }    
 
     public static void gameOverCheck() {
         int blueUnitCount = 0;
@@ -522,6 +742,18 @@ public class RedVsBluePlugin extends Plugin {
     }
 
     public static void gameOver(Team winner) {
+        Events.fire("rvsb_game_over:" + winner.name);
+        
+        Groups.player.each(p -> {
+            PlayerData data = players.get(p.uuid());
+            if (!(data == null)) {
+                data.setUnit(null);
+                data.setExp(0);
+                data.setLevel(1);
+                data.setScore(0);
+            }
+        });
+        
         if (winner == Team.crux) {
             if (playing) {
                 RedVsBluePlugin.playing = false;

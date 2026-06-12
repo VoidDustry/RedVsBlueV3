@@ -1,13 +1,92 @@
 name: rvsb
 
+//flare rework
+unit.flare.omniMovement: true
+unit.flare.rotateSpeed: 99999
+unit.flare.health: 120
+unit.flare.maxRange: 120
+unit.flare.rotateMoveFirst: false
+unit.flare.weapons: [
+    {
+        x: 2f
+        y: 0f
+        reload: 40f
+        ejectEffect: casing1
+        shootSound: shoot
+        bullet: {
+            range: 120
+            maxRange: 120
+            speed: 2.2
+            damage: 8
+            type: basicBulletType
+            width: 7f
+            height: 9f
+            lifetime: 45f
+            shootEffect: shootSmall
+            smokeEffect: shootSmallSmoke
+            keepVelocity: false
+        }
+    }
+    {
+        x: -2f
+        y: 0f
+        reload: 40f
+        ejectEffect: casing1
+        shootSound: shoot
+        shoot: {
+            firstShotDelay: 20
+        }
+        bullet: {
+            range: 120
+            maxRange: 120
+            speed: 2.2
+            damage: 8
+            type: basicBulletType
+            width: 7f
+            height: 9f
+            lifetime: 45f
+            shootEffect: shootSmall
+            smokeEffect: shootSmallSmoke
+            keepVelocity: false
+        }
+    }
+]
+
+// obviate shield
+unit.obviate.hitSize: 19.9
+//unit.obviate.flyingLayer: 115
+//unit.obviate.abilities.+: [ {
+    //type: forceFieldAbility
+    //sides: 4
+    //radius: 40
+    //max: 600
+    //regen: 0.5
+    //cooldown: 600
+//}
+//]
+// flare shield
+unit.flare.abilities.+: [
+{
+    type: shieldRegenFieldAbility
+    max: 60
+    amount: 10
+    reload: 90
+    range: 30
+}
+]
+
+
       //disrupt ability by alphy
 
 unit.disrupt.speed: 2
 
 //disrupt ability "wings"
-unit.disrupt.weapons.+: [ {
+//disrupt ability uses emanate as "base" because minShootVelocity is broken
+unit.emanate.hitSize: 0
+unit.emanate.region: dagger
+unit.emanate.weapons.+: [ {
 alwaysShooting: true
-minShootVelocity: 3.6
+//minShootVelocity: 28.8
 x: 0
 y: 0
 name: small-mount-weapon
@@ -17,7 +96,7 @@ recoilTime: 0
 reload: 10
 shake: 3.5f
 inaccuracy: 360
-shootSound: flux
+shootSound: loopFlux
 bullet: {
 type: lightningBulletType
 lightningLength: 1
@@ -34,7 +113,7 @@ x: 14
 y: 4
 xScl: 0.4
 yScl: 2.5
-heatColor: fc4e03
+heatColor: "fc4e03"
 }
 {
 name: obviate
@@ -46,7 +125,7 @@ x: 16
 y: -4
 xScl: 0.6
 yScl: 3.4
-heatColor: fc4e03
+heatColor: "fc4e03"
 }
 {
 name: obviate
@@ -58,7 +137,7 @@ x: 18
 y: -12
 xScl: 0.8
 yScl: 4.5
-heatColor: fc4e03
+heatColor: "fc4e03"
 }
 
 //mirror parts
@@ -72,7 +151,7 @@ x: -14
 y: 4
 xScl: 0.4
 yScl: 2.5
-heatColor: fc4e03
+heatColor: "fc4e03"
 }
 {
 name: obviate
@@ -84,7 +163,7 @@ x: -16
 y: -4
 xScl: 0.6
 yScl: 3.4
-heatColor: fc4e03
+heatColor: "fc4e03"
 }
 {
 name: obviate
@@ -96,7 +175,7 @@ x: -18
 y: -12
 xScl: 0.8
 yScl: 4.5
-heatColor: fc4e03
+heatColor: "fc4e03"
 }
 
 ]
@@ -105,28 +184,28 @@ heatColor: fc4e03
 //disrupt ability additional sfx
 {
 alwaysShooting: true
-minShootVelocity: 3.6
+//minShootVelocity: 28.8
 reload: 20
-shootSound: spellLoop
+shootSound: loopMalign
 bullet: {
 lifetime: 0
 speed: 0
 }
 }
 
-// disrupt ability bombs
+//disrupt ability bombs
 {
 shake: 7
 alwaysShooting: true
 x: 0
 y: 0
-minShootVelocity: 3.6
+//minShootVelocity: 28.8
 reload: 540
 shoot: {
 firstShotDelay: 60
 }
 shootSound: none
-chargeSound: lasercharge2
+chargeSound: chargeVela
 bullet: {
 splashDamagePierce: true
 despawnHit: true
@@ -135,7 +214,7 @@ splashDamageRadius: 80f
 splashDamage: 900
 weaveScale: 8
 weaveMag: 1
-trailColor: 760ee6
+trailColor: "760ee6"
 trailWidth: 5f
 trailLength: 10
 sprite: missile-large
@@ -149,26 +228,26 @@ keepVelocity: false
 speed: 3
 lightRadius: 180f
 lightOpacity: 0.7f
-lightColor: 760ee6
-backColor: 760ee6
-frontColor: ffffff
+lightColor: "760ee6"
+backColor: "760ee6"
+frontColor: "ffffff"
 lifetime: 25f
 fragBullets: 5
 fragRandomSpread: 360f
 fragVelocityMin: 0.3f
-hitSound: plasmaboom
-despawnSound: plasmaboom
+hitSound: explosionQuad
+despawnSound: explosionQuad
 hitEffect: {
 lifetime: 90f
 type: explosionEffect
 waveStroke: 6
 waveLife: 10f
 waveRadBase: 7f
-waveColor: 760ee6
+waveColor: "760ee6"
 waveRad: 120f
 smokes: 18
-smokeColor: ffffff
-sparkColor: 760ee6
+smokeColor: "ffffff"
+sparkColor: "760ee6"
 sparks: 18
 sparkRad: 120f
 sparkStroke: 1.5f
@@ -186,8 +265,8 @@ height: 22
 hitSize: 0
 damage: 0
 lifetime: 60
-backColor: 760ee6
-trailColor: 760ee6
+backColor: "760ee6"
+trailColor: "760ee6"
 trailWidth: 3
 trailLength: 12
 despawnEffect: hitBulletColor
@@ -197,7 +276,7 @@ fragBullets: 1
 fragBullet: {
 speed: 0f
 keepVelocity: false
-spawnUnit: emanate
+spawnUnit: incite
 }
 }
 }
@@ -205,41 +284,42 @@ spawnUnit: emanate
 ]
 
 
+//disrupt drone(incite)
+unit.incite.localizedName: "Disruption drone"
+unit.incite.controller: flyingAI
+unit.incite.hitSize: 9
+unit.incite.flyingLayer: 85
+unit.incite.region: "unit-assembly-drone-full"
+unit.incite.fullIcon: "unit-assembly-drone-preview"
+unit.incite.uiIcon: "unit-assembly-drone-ui"
+unit.incite.playerControllable: false
+unit.incite.logicControllable: false
+unit.incite.allowedInPayloads: false
+unit.incite.range: 320
+unit.incite.maxRange: 400
+unit.incite.faceTarget: false
+unit.incite.fogRadius: 20
+unit.incite.useUnitCap: false
+unit.incite.health: 60
+unit.incite.hittable: true
+unit.incite.targetable: true
+unit.incite.controller: FlyingAI
+unit.incite.aiController: FlyingAI
 
-//disrupt drone(emanate)
-unit.emanate.localizedName: "Disruption drone"
-unit.emanate.hitSize: 0
-unit.emanate.flyingLayer: 85
-unit.emanate.region: "unit-assembly-drone-full"
-unit.emanate.fullIcon: "unit-assembly-drone-preview"
-unit.emanate.uiIcon: "unit-assembly-drone-ui"
-unit.emanate.playerControllable: false
-unit.emanate.logicControllable: false
-unit.emanate.allowedInPayloads: false
-unit.emanate.range: 320
-unit.emanate.maxRange: 400
-unit.emanate.faceTarget: false
-unit.emanate.fogRadius: 20
-unit.emanate.flyingLayer: -11000
-unit.emanate.useUnitCap: false
-unit.emanate.health: 1500
-unit.emanate.hittable: true
-unit.emanate.targetable: true
 
 //drone timed death
-unit.emanate.abilities.+: [
+unit.incite.abilities.+: [
 {
 type: RepairFieldAbility
 amount: -1
 reload: 60
-range: 1
+range: 0.1
 healEffect: hitFlameSmall   
 activeEffect: hitFlameSmall   
 }
 ]
 
-unit.emanate.weapons: [
-//drone body because you cant edit engines for some reason so they go to -11000
+unit.incite.weapons: [
 {
 x: 0
 y: 0
@@ -248,8 +328,8 @@ recoil: 0
 recoils: 0
 recoilTime: 0
 name: "assembly-drone"
-layerOffset: 11085
-shootSound: spark
+layerOffset: 0
+shootSound: shootArc
 controllable: false
 autoTarget: true
 bullet: {
@@ -260,12 +340,25 @@ pierceArmor: true
 }
 }
 
+//invulnerability
+{
+    alwaysShooting: true
+    reload: 99999999999999
+    shootStatus: invincible
+    shootStatusDuration: 1800
+    bullet: {
+        type: lightningBulletType
+    lightningLength: 1
+    damage: 0
+    }
+}
+
 // parallax with very low reload and range
 {
 name: small-mount-weapon
 x: 0
 y: -5
-layerOffset: 11085.0001
+layerOffset: 0.0001
 type: pointDefenseWeapon
 reload: 4
 targetInterval: 4
@@ -273,7 +366,7 @@ targetSwitchInterval: 4
 recoil: 0
 recoils: 0
 recoilTime: 0
-shootSound: lasershoot
+shootSound: shootLaser
 bullet: {
 shootEffect: sparkShoot
 hitEffect: pointHit
@@ -287,14 +380,14 @@ damage: 20
 x: 0
 y: 0
 name: "vanquish-point-weapon"
-layerOffset: 11085.0001
+layerOffset: 0.0001
 controllable: false
 autoTarget: true
 recoils: 0
 recoil: 5
 recoilTime: 120
-reload: 600
-shootSound: malignShoot
+reload: 1200
+shootSound: shootMalign
 rotate: true
 alwaysShooting: true
 shoot: {
@@ -302,7 +395,7 @@ firstShotDelay: 105
 }
 bullet: {
 type: laserBulletType
-colors: [4d0505,940909,ff0000]
+colors: ["4d0505","940909","ff0000"]
 lifetime: 55
 maxRange: 320
 range: 320
@@ -328,17 +421,17 @@ controllable: false
 autoTarget: true
 x: 0
 y: 0
-shootSound: unlock
+shootSound: uiUnlock
 rotate: true
 alwaysShooting: true
-reload: 600
+reload: 1200
 shoot: {
 firstShotDelay: 70
 }
 bullet: {
 lifetime: 8
 damage: 0
-colors: [666666,999999,aaaaaa]
+colors: ["666666","999999","aaaaaa"]
 type: laserBulletType
 maxRange: 320
 range: 320
@@ -350,17 +443,17 @@ controllable: false
 autoTarget: true
 x: 0
 y: 0
-shootSound: unlock
+shootSound: uiUnlock
 rotate: true
 alwaysShooting: true
-reload: 600
+reload: 1200
 shoot: {
 firstShotDelay: 30
 }
 bullet: {
 lifetime: 8
 damage: 0
-colors: [666666,999999,aaaaaa]
+colors: ["666666","999999","aaaaaa"]
 type: laserBulletType
 maxRange: 320
 range: 320
@@ -373,7 +466,7 @@ shoot: {
 shots: 3
 shotDelay: 1
 }
-shootSound: spark
+shootSound: shootArc
 inaccuracy: 360f
 rotate: false
 x: 0
@@ -400,7 +493,7 @@ shoot: {
 shots: 10
 shotDelay: 6
 }
-shootSound: spark
+shootSound: shootArc
 reload: 270
 alwaysShooting: true
 inaccuracy: 360f
@@ -415,156 +508,189 @@ damage: 10
 
 
 
-//quell and disrupt missile change for kill reward to work,yeah they pierce now,quell missile is same as disrupt except a bit more damage
-unit.disrupt-missile.range: 23
-unit.disrupt-missile.maxRange: 23
+//quell and disrupt missiles
 unit.disrupt.targetAir: true
 unit.disrupt-missile.targetAir: true
-unit.disrupt.weapons.0.bullet.collidesAir: true
-unit.disrupt-missile.health: 99999
-unit.disrupt-missile.weapons: [ 
-  {
-  shootSound: none
-  shootStatusDuration: 2
-  shootStatus: freezing
-  shootCone: 360f
-  bullet: {
-    range: 13
-    maxRange: 13
-    lifetime: 1f
-    type: basicBulletType
-    damage: 0
-    }
-  }
-  {
-  shootSound: none
-  shootStatusDuration: 2
-  shootStatus: tarred
-  shootCone: 360f
-    bullet: {
-    range: 13
-    maxRange: 13
-    lifetime: 1f
-    type: basicBulletType
-    damage: 0
-    }
-  }
-  {
-  shootCone: 360f
-  mirror: false
-  reload: 3f
-  shootSound: flame
-  shootStatusDuration: 2
-  shootStatus: slow
-  shootOnDeath: true
-  bullet: {
-    range: 13
-    maxRange: 13
-    type: basicBulletType
-    lightning: 1
-    sprite: ""
-    lifetime: 1f
-    collidesAir: true
-    suppressionRange: 140f
-    width: 49.6f
-    height: 49.6f
-    damage: 80f
-    pierce: true
-    shootEffect: {
-      type: ExplosionEffect
-      lifetime: 50f
-      waveStroke: 5f
-      waveLife: 8f
-      waveColor: ffffff
-      sparkColor: 665c9f
-      smokeColor: 665c9f
-      waveRad: 40f
-      smokeSize: 4f
-      smokes: 7
-      smokeSizeBase: 0f
-      sparks: 10
-      sparkRad: 40f
-      sparkLen: 6f
-      sparkStroke: 2f
-    }
-  }
+unit.disrupt-missile.weapons.0: {
+reload: 9999
+bullet: {
+collidesAir: true
+killShooter: false
+fragBullets: 1
+fragBullet: {
+type: basicBulletType
+collides: false
+speed: 0f
+lifetime: 5f
+drawSize: 0
+fragBullets: 1
+fragBullet: {
+killShooter: true
+instantDisappear: true
 }
-]
+}
+}
+}
+unit.disrupt-missile.health: 99999
+// unit.disrupt-missile.weapons: [ 
+//  {
+//  shootSound: none
+//  shootStatusDuration: 2
+//  shootStatus: freezing
+//  shootCone: 360f
+//  bullet: {
+//    range: 13
+//    maxRange: 13
+//    lifetime: 1f
+//    type: basicBulletType
+//    damage: 0
+//    }
+//  }
+//  {
+//  shootSound: none
+//  shootStatusDuration: 2
+//  shootStatus: tarred
+//  shootCone: 360f
+//    bullet: {
+//    range: 13
+//    maxRange: 13
+//    lifetime: 1f
+//   type: basicBulletType
+//    damage: 0
+//    }
+//  }
+//  {
+//  shootCone: 360f
+//  mirror: false
+//  reload: 3f
+//  shootSound: shootFlame
+//  shootStatusDuration: 2
+//  shootStatus: slow
+//  shootOnDeath: true
+//  bullet: {
+//    range: 13
+//    maxRange: 13
+//    type: basicBulletType
+//    lightning: 1
+//    sprite: ""
+//    lifetime: 1f
+//    collidesAir: true
+//    suppressionRange: 140f
+//    width: 49.6f
+//    height: 49.6f
+//    damage: 33f
+//    pierce: true
+//    shootEffect: {
+//      type: ExplosionEffect
+//      lifetime: 50f
+//      waveStroke: 5f
+//      waveLife: 8f
+//      waveColor: "ffffff"
+//      sparkColor: "665c9f"
+//      smokeColor: "665c9f"
+//      waveRad: 40f
+//      smokeSize: 4f
+//      smokes: 7
+//      smokeSizeBase: 0f
+//      sparks: 10
+//      sparkRad: 40f
+//      sparkLen: 6f
+//      sparkStroke: 2f
+//    }
+//  }
+// }
+// ]
 
-unit.quell-missile.range: 40
-unit.quell-missile.maxRange: 40
 unit.quell.targetAir: true
 unit.quell-missile.targetAir: true
-unit.quell.weapons.0.bullet.collidesAir: true
-unit.quell-missile.health: 99999
-unit.quell-missile.weapons: [ 
-  {
-  shootSound: none
-  shootStatusDuration: 2
-  shootStatus: freezing
-  shootCone: 360f
-  bullet: {
-    range: 13
-    maxRange: 13
-    lifetime: 1f
-    type: basicBulletType
-    damage: 0
-    }
-  }
-  {
-  shootSound: none
-  shootStatusDuration: 2
-  shootStatus: tarred
-  shootCone: 360f
-  bullet: {
-    range: 13
-    maxRange: 13
-    lifetime: 1f
-    type: basicBulletType
-    damage: 0
-    }
-  }
-  {
-  shootCone: 360f
-  mirror: false
-  reload: 3f
-  shootSound: flame
-  shootStatusDuration: 2
-  shootStatus: slow
-  shootOnDeath: true
-  bullet: {
-    range: 13
-    maxRange: 13
-    type: basicBulletType
-    lightning: 1
-    sprite: ""
-    lifetime: 1f
-    collidesAir: true
-    suppressionRange: 140f
-    width: 49.6f
-    height: 49.6f
-    damage: 140f
-    pierce: true
-    shootEffect: {
-      type: ExplosionEffect
-      lifetime: 90f
-      waveStroke: 5f
-      waveLife: 8f
-      waveColor: ffffff
-      sparkColor: 665c9f
-      smokeColor: 665c9f
-      waveRad: 40f
-      smokeSize: 4f
-      smokes: 7
-      smokeSizeBase: 0f
-      sparks: 10
-      sparkRad: 40f
-      sparkLen: 6f
-      sparkStroke: 2f
-    }
-  }
+unit.quell-missile.weapons.0: {
+reload: 9999
+bullet: {
+collidesAir: true
+killShooter: false
+fragBullets: 1
+fragBullet: {
+type: basicBulletType
+collides: false
+speed: 0f
+lifetime: 5f
+drawSize: 0
+fragBullets: 1
+fragBullet: {
+killShooter: true
+instantDisappear: true
 }
-]
+}
+}
+}
+// unit.quell-missile.weapons: [ 
+//  {
+//  shootSound: none
+//  shootStatusDuration: 2
+//  shootStatus: freezing
+//  shootCone: 360f
+//  bullet: {
+//    range: 13
+//    maxRange: 13
+//    lifetime: 1f
+//    type: basicBulletType
+//    damage: 0
+//    }
+//  }
+//  {
+//  shootSound: none
+//  shootStatusDuration: 2
+//  shootStatus: tarred
+//  shootCone: 360f
+//  bullet: {
+//    range: 13
+//    maxRange: 13
+//    lifetime: 1f
+//    type: basicBulletType
+//    damage: 0
+//    }
+//  }
+//  {
+//  shootCone: 360f
+//  mirror: false
+//  reload: 3f
+//  shootSound: shootFlame
+//  shootStatusDuration: 2
+//  shootStatus: slow
+//  shootOnDeath: true
+//  bullet: {
+//    range: 13
+//    maxRange: 13
+//    type: basicBulletType
+//    lightning: 1
+//    sprite: ""
+//    lifetime: 1f
+//    collidesAir: true
+//    suppressionRange: 140f
+//    width: 49.6f
+//    height: 49.6f
+//    damage: 45f
+//    pierce: true
+//    shootEffect: {
+//      type: ExplosionEffect
+//      lifetime: 90f
+//      waveStroke: 5f
+//      waveLife: 8f
+//      waveColor: "ffffff"
+//      sparkColor: "665c9f"
+//      smokeColor: "665c9f"
+//      waveRad: 40f
+//      smokeSize: 4f
+//      smokes: 7
+//      smokeSizeBase: 0f
+//      sparks: 10
+//      sparkRad: 40f
+//      sparkLen: 6f
+//      sparkStroke: 2f
+//    }
+//  }
+// }
+// ]
 
 
 
@@ -599,18 +725,18 @@ unit.anthicus.weapons: [
     x: 0
     y: 0
     shootY: 11.75f
-    shootSound: torch
+    shootSound: shootSublimate
     bullet: {
     status: freezing
     range: 350
     maxRange: 350
     type: railBulletType
     pierceCap: 1
-    damage: 1.6
+    damage: 0
     length: 340
     pierceDamageFactor: 0.1
     pointEffect: railTrail
-    hitColor: 89cffa
+    hitColor: "89cffa"
     pierceArmor: true
     hitEffect: hitSquaresColor
     }
@@ -634,18 +760,18 @@ unit.anthicus.weapons: [
     x: 0
     y: 0
     shootY: 11.75f
-    shootSound: spellLoop
+    shootSound: loopMalign
     bullet: {
     range: 350
     maxRange: 350
     type: continuousFlameBulletType
-    flareColor: 89cffa
+    flareColor: "89cffa"
     pierceCap: 1
-    damage: 0
+    damage: 1.6
     length: 350
     pierceDamageFactor: 0.1
     width: 4f
-    colors: [89cffa,ffffff,30a7f0,ffffff]
+    colors: ["89cffa","ffffff","30a7f0","ffffff"]
 }
 }
 {
@@ -662,7 +788,7 @@ unit.anthicus.weapons: [
     recoil: 2f
     recoils: 1
     recoilTime: 120f
-    shootSound: beam
+    shootSound: beamMeltdown
     bullet: {
     range: 350
     maxRange: 350
@@ -686,7 +812,7 @@ name: "retusa-weapon"
 x: 0
 y: -2f
 rotate: true
-shootSound: lasershoot
+shootSound: shootLaser
 reload: 125f
 cooldownTime: 40f
 useAttackRange: true
@@ -707,24 +833,104 @@ maxRange: 144f
 speed: 10f
 lifetime: 14f
 type: laserBoltBulletType
-backColor: 99ff99
-frontColor: ffffff
+backColor: "99ff99"
+frontColor: "ffffff"
 healPercent: 5f
 collidesTeam: true
-damage: 20f
+damage: 25f
 ammoMultiplier: 2
 }
 }
 
-//update unit and block stats
-// Health
 
+//crux vela wproc bullet
+unit.vela.weapons.+: {
+shoot: {
+firstShotDelay: 9999999
+}
+bullet: {
+type: ShrapnelBulletType
+length: 90f
+damage: 110f
+width: 25f
+serrations : 5
+serrationLenScl: 7
+serrationSpaceOffset: 60f
+serrationFadeOffset: 0f
+serrationWidth: 4f
+fromColor: ffcb82
+toColor: c2ffbf
+shootEffect: sparkShoot
+}
+}
+
+//tecta alternate shield
+unit.tecta.details: "This unit's shield does not deflect bullets."
+unit.tecta.abilities: [
+{
+    type: ShieldArcAbility     
+    max: 9500    
+    chanceDeflect: -1  
+    regen: 4.5
+    cooldown: 1200
+    radius: 65
+    width: 80
+    angle: 100        
+    y: 0              
+    whenShooting: false
+    pushUnits: false
+    region: tecta-weapon
+}
+]
+unit.tecta.weapons.+: [ {
+    name: retusa-weapon
+    layerOffset: -5
+    controllable: false
+    recoil: 0
+    recoils: 1
+    recoilTime: 5
+    rotate: false
+    x: 0
+    y: 0
+    top: true
+    parts: [ 
+    {
+        name: tecta-weapon
+        layerOffset: 5.0001
+    }
+    {
+        name: tecta-weapon
+        layerOffset: 5.0001
+        xScl: -1
+    }
+    {
+        name: anthicus-weapon
+        layerOffset: 5.0002
+    }
+    ]
+}  
+]
+
+
+
+//dont register crawlers that manually explode
+unit.crawler.weapons.0.shootStatus: noRegisterKills
+unit.crawler.weapons.0.shootStatusDuration: 1000
+
+//update unit and block stats
+
+// Hit size
+unit.vanquish.hitSize: 16
+
+// Health
+unit.nova.health: 250
 unit.stell.health: 400
 unit.mono.health: 200
 unit.locus.armor: -20
 unit.retusa.health: 800
 unit.pulsar.health: 500
 unit.pulsar.armor: 6
+unit.merui.health: 400
 
 // Health
 unit.elude.health: 300
@@ -738,12 +944,13 @@ unit.pulsar.itemCapacity: 40
 unit.mace.weapons.0.bullet.damage: 17
 unit.mace.weapons.1.bullet.damage: 17
 unit.avert.weapons.0.bullet.damage: 35
-unit.mega.weapons.0.bullet.damage: 30
-unit.mega.weapons.1.bullet.damage: 30
-unit.mega.weapons.2.bullet.damage: 30
-unit.mega.weapons.3.bullet.damage: 30
+unit.mega.weapons.0.bullet.damage: 18
+unit.mega.weapons.1.bullet.damage: 18
+unit.mega.weapons.2.bullet.damage: 18
+unit.mega.weapons.3.bullet.damage: 18
 
 //blocks
+block.launch-pad.itemCapacity: 50000
 block.combustion-generator.health: 320
 block.mender.health: 120
 
@@ -751,3 +958,236 @@ block.tungsten-wall.targetable: false
 block.tungsten-wall.health: 99999
 block.tungsten-wall-large.targetable: false
 block.tungsten-wall-large.health: 99999
+
+//generators consumption
+block.combustion-generator.itemDuration: 2400
+block.steam-generator.itemDuration: 2400
+block.thorium-reactor.itemDuration: 1800
+block.thorium-reactor.powerProduction: 45
+block.rtg-generator.itemDuration: 14400
+
+//statuses
+status.electrified.reloadMultiplier: 0.75
+
+//building system,match prices with Buildings.java
+item.dormant-cyst.localizedName: " Points"
+item.dormant-cyst.uiIcon: "unit-dagger-ui"
+item.dormant-cyst.fullIcon: "unit-dagger-preview"
+
+block.bridge-conduit.requirements: [dormant-cyst/3]
+block.bridge-conduit.category: effect
+
+block.bridge-conveyor.requirements: [dormant-cyst/3]
+block.bridge-conveyor.category: effect
+
+block.unloader.requirements: [dormant-cyst/9]
+block.unloader.category: effect
+
+block.power-node-large.requirements: [dormant-cyst/9]
+block.power-node-large.category: effect
+
+block.pneumatic-drill.requirements: [dormant-cyst/9]
+block.pneumatic-drill.category: effect
+
+block.container.requirements: [dormant-cyst/3]
+block.container.category: effect
+
+block.beryllium-wall.requirements: [dormant-cyst/2]
+block.beryllium-wall.category: effect
+
+block.beryllium-wall-large.requirements: [dormant-cyst/6]
+block.beryllium-wall-large.category: effect
+
+block.thorium-wall.requirements: [dormant-cyst/4]
+block.thorium-wall.category: effect
+
+block.thorium-wall-large.requirements: [dormant-cyst/12]
+block.thorium-wall-large.category: effect
+
+block.blast-door.requirements: [dormant-cyst/30]
+block.blast-door.category: effect
+
+block.combustion-generator.requirements: [dormant-cyst/9]
+block.combustion-generator.category: effect
+
+block.rtg-generator.requirements: [dormant-cyst/30]
+block.rtg-generator.category: effect
+
+block.laser-drill.requirements: [dormant-cyst/25]
+block.laser-drill.category: effect
+
+block.force-projector.requirements: [dormant-cyst/35]
+block.force-projector.category: effect
+
+block.power-node.requirements: [dormant-cyst/3]
+block.power-node.category: effect
+
+block.battery.requirements: [dormant-cyst/5]
+block.battery.category: effect
+
+block.segment.requirements: [dormant-cyst/80]
+block.segment.category: effect
+
+block.mechanical-pump.requirements: [dormant-cyst/4]
+block.mechanical-pump.category: effect
+
+block.mender.requirements: [dormant-cyst/10]
+block.mender.category: logic
+block.mender.localizedName: "Repair point"
+
+block.phase-wall.requirements: [dormant-cyst/20]
+block.phase-wall.category: logic
+block.phase-wall.localizedName: "Suppressor tower"
+
+block.radar.requirements: [dormant-cyst/8]
+block.radar.category: logic
+block.radar.localizedName: "Workbench"
+
+block.carbide-wall.requirements: [dormant-cyst/7]
+block.carbide-wall.category: logic
+block.carbide-wall.localizedName: "Laboratory"
+
+block.beam-node.requirements: [dormant-cyst/18]
+block.beam-node.category: logic
+block.beam-node.localizedName: "Booster"
+
+block.slag-incinerator.requirements: [dormant-cyst/6]
+block.slag-incinerator.category: logic
+block.slag-incinerator.localizedName: "Recycler"
+
+block.pulverizer.requirements: [dormant-cyst/20]
+block.pulverizer.category: logic
+block.pulverizer.localizedName: "Miner"
+
+
+
+//building for everyone
+unit.dagger.buildSpeed: 0.01
+unit.mace.buildSpeed: 0.01
+unit.fortress.buildSpeed: 0.01
+unit.scepter.buildSpeed: 0.01
+unit.reign.buildSpeed: 0.01
+
+unit.flare.buildSpeed: 0.01
+unit.horizon.buildSpeed: 0.01
+unit.zenith.buildSpeed: 0.01
+unit.antumbra.buildSpeed: 0.01
+unit.eclipse.buildSpeed: 0.01
+
+unit.nova.buildSpeed: 0.01
+unit.pulsar.buildSpeed: 0.01
+unit.quasar.buildSpeed: 0.01
+unit.vela.buildSpeed: 0.01
+unit.corvus.buildSpeed: 0.01
+
+unit.crawler.buildSpeed: 0.01
+unit.atrax.buildSpeed: 0.01
+unit.spiroct.buildSpeed: 0.01
+unit.arkyid.buildSpeed: 0.01
+unit.toxopid.buildSpeed: 0.01
+
+unit.mono.buildSpeed: 0.01
+unit.poly.buildSpeed: 0.01
+unit.mega.buildSpeed: 0.01
+unit.quad.buildSpeed: 0.01
+unit.oct.buildSpeed: 0.01
+
+unit.risso.buildSpeed: 0.01
+unit.minke.buildSpeed: 0.01
+unit.bryde.buildSpeed: 0.01
+unit.sei.buildSpeed: 0.01
+unit.omura.buildSpeed: 0.01
+
+unit.retusa.buildSpeed: 0.01
+unit.oxynoe.buildSpeed: 0.01
+unit.cyerce.buildSpeed: 0.01
+unit.aegires.buildSpeed: 0.01
+unit.navanax.buildSpeed: 0.01
+
+unit.stell.buildSpeed: 0.01
+unit.locus.buildSpeed: 0.01
+unit.precept.buildSpeed: 0.01
+unit.vanquish.buildSpeed: 0.01
+unit.conquer.buildSpeed: 0.01
+
+unit.merui.buildSpeed: 0.01
+unit.cleroi.buildSpeed: 0.01
+unit.anthicus.buildSpeed: 0.01
+unit.tecta.buildSpeed: 0.01
+unit.collaris.buildSpeed: 0.01
+
+unit.elude.buildSpeed: 0.01
+unit.avert.buildSpeed: 0.01
+unit.obviate.buildSpeed: 0.01
+unit.quell.buildSpeed: 0.01
+unit.disrupt.buildSpeed: 0.01
+
+//boat accesibility to match cheat clients/mods
+unit.risso.omniMovement: true
+unit.minke.omniMovement: true
+unit.bryde.omniMovement: true
+unit.sei.omniMovement: true
+unit.omura.omniMovement: true
+
+unit.retusa.omniMovement: true
+unit.oxynoe.omniMovement: true
+unit.cyerce.omniMovement: true
+unit.aegires.omniMovement: true
+unit.navanax.omniMovement: true
+
+// balance changes
+unit.nova.weapons.0.bullet.healPercent: 0
+unit.nova.weapons.0.bullet.healAmount: 50
+unit.nova.weapons.1.bullet.healPercent: 0
+unit.nova.weapons.1.bullet.healAmount: 50
+unit.pulsar.weapons.0.bullet.healPercent: 0
+unit.pulsar.weapons.0.bullet.healAmount: 30
+unit.pulsar.weapons.1.bullet.healPercent: 0
+unit.pulsar.weapons.1.bullet.healAmount: 30
+unit.quasar.weapons.0.bullet.healPercent: 0
+unit.quasar.weapons.0.bullet.healAmount: 100
+unit.quasar.weapons.1.bullet.healPercent: 0
+unit.quasar.weapons.1.bullet.healAmount: 100
+unit.vela.weapons.0.bullet.healPercent: 0
+unit.vela.weapons.0.bullet.healAmount: 20
+unit.corvus.weapons.0.bullet.healPercent: 0
+unit.corvus.weapons.0.bullet.healAmount: 1000
+unit.mono.weapons.0.bullet.healPercent: 0
+unit.mono.weapons.0.bullet.healAmount: 25
+unit.poly.weapons.0.bullet.healPercent: 0
+unit.poly.weapons.0.bullet.healAmount: 60
+unit.poly.weapons.1.bullet.healPercent: 0
+unit.poly.weapons.1.bullet.healAmount: 60
+unit.mega.weapons.0.bullet.healPercent: 0
+unit.mega.weapons.0.bullet.healAmount: 65
+unit.mega.weapons.1.bullet.healPercent: 0
+unit.mega.weapons.1.bullet.healAmount: 65
+unit.mega.weapons.2.bullet.healPercent: 0
+unit.mega.weapons.2.bullet.healAmount: 40
+unit.mega.weapons.3.bullet.healPercent: 0
+unit.mega.weapons.3.bullet.healAmount: 40
+unit.quad.weapons.0.bullet.healPercent: 0
+unit.quad.weapons.0.bullet.healAmount: 200
+unit.retusa.weapons.1.bullet.healPercent: 0
+unit.retusa.weapons.1.bullet.healAmount: 50
+unit.retusa.weapons.2.bullet.healPercent: 0
+unit.retusa.weapons.2.bullet.healAmount: 50
+unit.retusa.weapons.3.bullet.healPercent: 0
+unit.retusa.weapons.3.bullet.healAmount: 40
+unit.oxynoe.weapons.0.bullet.healPercent: 0
+unit.oxynoe.weapons.0.bullet.healAmount: 20
+unit.oxynoe.weapons.1.bullet.healPercent: 0
+unit.oxynoe.weapons.1.bullet.healAmount: 20
+unit.navanax.weapons.0.bullet.healPercent: 0
+unit.navanax.weapons.0.bullet.healAmount: 200
+unit.navanax.weapons.1.bullet.healPercent: 0
+unit.navanax.weapons.1.bullet.healAmount: 200
+unit.navanax.weapons.2.bullet.healPercent: 0
+unit.navanax.weapons.2.bullet.healAmount: 30
+unit.navanax.weapons.3.bullet.healPercent: 0
+unit.navanax.weapons.3.bullet.healAmount: 30
+unit.navanax.weapons.4.bullet.healPercent: 0
+unit.navanax.weapons.4.bullet.healAmount: 30
+unit.navanax.weapons.5.bullet.healPercent: 0
+unit.navanax.weapons.5.bullet.healAmount: 30
+

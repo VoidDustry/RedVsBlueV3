@@ -18,6 +18,9 @@ public class BossChooseMenu {
         PlayerData data = RedVsBluePlugin.players.get(player.uuid());
 
         int menu = Menus.registerMenu(((player1, option) -> {
+            if (option < 0) {
+                return;
+            }
 
             switch (option) {
                 case 0 -> data.setSelectedBoss(UnitTypes.mace);

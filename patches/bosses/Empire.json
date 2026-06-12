@@ -1,0 +1,398 @@
+name: empire boss, author: alphy
+
+unit.evoke: {
+localizedName: Empire
+description: "Siege machine. Deals insane damage to buildings."
+region: "reign"
+
+parts: [
+{
+name: "reign"
+xScl: 1.5
+yScl: 1.2
+layerOffset: -0.002
+} 
+{
+name: "scepter"
+layerOffset: -0.001
+xScl: 1.1
+yScl: 1.1
+x: 10
+}
+{
+name: "scepter"
+layerOffset: -0.001
+xScl: 1.1
+yScl: 1.1
+x: -10
+}
+{
+name: "scepter"
+y: 8
+xScl: 1.5
+layerOffset: -0.003
+}
+{
+name: "scepter"
+xScl: 2.25
+y: -2
+layerOffset: -0.003
+}
+]
+
+flying: false
+
+controller: groundAI
+
+type: mech
+legLength: 35
+legRegion: "reign-leg"
+
+hittable: true
+fogRadius: 300
+coreUnitDock: false
+targetAir: true
+targetGround: true
+playerControllable: true
+logicControllable: true
+targetable: true
+autoFindTarget: true
+useUnitCap: true
+createScorch: true
+uiIcon: "unit-reign-ui"
+cellRegion: "scepter-cell"
+
+
+speed: 0.3f
+range: 350
+maxRange: 450
+rotateSpeed: 0.6
+aimDst: 120
+hitSize: 40f
+health: 62000
+mechStepParticles: true
+stepShake: 1.2f
+drownTimeMultiplier: 4
+mechFrontSway: 1f
+mechSideSway: 0.6f
+aiController: GroundAI
+controller: GroundAI
+
+stepSound: mechStepHeavy
+stepSoundPitch: 0.8
+stepSoundVolume: 0.7
+
+weapons: [
+{
+name: "reign-weapon"
+layerOffset: -0.0005
+top: true
+x: 26
+y: 5
+parts: [
+{
+name: "reign-weapon"
+layerOffset: 0.0001
+xScl: 1.6
+yScl: 1.1
+}
+{
+name: "reign-weapon"
+layerOffset: 0.0002
+xScl: 0.8
+yScl: 0.8
+}
+{
+name: "scepter-weapon"
+layerOffset: 0.0001
+xScl: 0.8
+yScl: 0.8
+y: -16
+}
+{
+name: "scepter-weapon"
+layerOffset: 0.0001
+xScl: 0.8
+yScl: 0.8
+y: 16
+}
+]
+shootY: 16
+reload: 50
+recoil: 8f
+recoils: 1
+recoilTime: 50
+shake: 3.5
+ejectEffect: casing4
+shootSound: shootMalign
+
+bullet: {
+damage: 60
+splashDamage: 300
+splashDamageRadius: 30
+type: BasicBulletType
+speed: 14
+width: 20
+height: 80
+lifetime: 12.5
+shootEffect: shootBig
+hitEffect: blastExplosion
+fragBullets: 1
+fragRandomSpread: 1
+fragLifeMin: 5
+fragLifeMax: 6
+despawnSound: shockBullet
+lightning: 3
+lightningDamage: 30
+lightningLength: 14
+lightningColor: "fffd7a"
+fragBullet: {
+type: BasicBulletType
+damage: 100
+width: 20
+height: 40
+lifetime: 4
+speed: 14
+pierce: true
+pierceBuilding: true
+hitSound: shockBullet
+pierceCap: 99999
+lightning: 1
+lightningDamage: 20
+lightningLength: 14
+lightningColor: "fffd7a"
+despawnSound: explosion
+}
+}
+} 
+
+{
+name: "reign-weapon"
+layerOffset: -0.0005
+top: true
+x: -26
+y: 5
+parts: [
+{
+name: "reign-weapon"
+layerOffset: 0.0001
+xScl: -1.6
+yScl: 1.1
+}
+{
+name: "reign-weapon"
+layerOffset: 0.0002
+xScl: -0.8
+yScl: 0.8
+}
+{
+name: "scepter-weapon"
+layerOffset: 0.0001
+xScl: -0.8
+yScl: 0.8
+y: -16
+}
+{
+name: "scepter-weapon"
+layerOffset: 0.0001
+xScl: -0.8
+yScl: 0.8
+y: 16
+}
+]
+shootY: 16
+reload: 50
+shoot : {
+firstShotDelay: 25
+}
+recoil: 8f
+recoils: 1
+recoilTime: 50
+shake: 3.5
+ejectEffect: casing4
+shootSound: shootMalign
+
+bullet: {
+damage: 60
+splashDamage: 300
+splashDamageRadius: 30
+type: BasicBulletType
+speed: 14
+width: 20
+height: 80
+lifetime: 12.5
+shootEffect: shootBig
+hitEffect: blastExplosion
+fragBullets: 1
+fragRandomSpread: 1
+fragLifeMin: 5
+fragLifeMax: 6
+despawnSound: shockBullet
+lightning: 3
+lightningDamage: 30
+lightningLength: 14
+lightningColor: "fffd7a"
+fragBullet: {
+type: BasicBulletType
+damage: 100
+width: 20
+height: 40
+lifetime: 4
+speed: 14
+pierce: true
+pierceBuilding: true
+hitSound: shockBullet
+pierceCap: 99999
+lightning: 1
+lightningDamage: 20
+lightningLength: 14
+lightningColor: "fffd7a"
+despawnSound: explosion
+}
+}
+}
+
+{
+layerOffset: 0.05
+parts: [
+{
+name: "scepter-weapon"
+layerOffset: 0.061
+}
+{
+name: "sei-launcher"
+layerOffset: 0.06
+xScl: 0.7
+}
+]
+x: 12
+y: -8
+shootY: 6
+rotate: true
+autoTarget: true
+alwaysShooting: true
+controllable: false
+reload: 900
+rotateSpeed: 99999
+targetInterval: 180
+shake: 4
+recoil: 6
+recoils: 1
+recoilTime: 60
+inaccuracy: 12f
+velocityRnd: 0.4
+extraVelocity: 0.4
+shootSound: shootArtillery
+shoot: {
+firstShotDelay: 30
+shots: 10
+}
+bullet: {
+collidesAir: true
+type: artilleryBulletType
+range: 99999999
+width: 15
+height: 15
+speed: 4
+lifetime: 9999
+fragBullets: 1
+fragLifeMin: 2.5
+fragBullet: {
+type: basicBulletType
+speed: 0
+lifetime: 60
+collides: false
+despawnEffect: unitCapKill
+despawnSound: uiUnlock
+width: 15
+height: 15
+fragBullets: 1
+fragBullet: {
+type: basicBulletType
+speed: 0
+lifetime: 60
+collides: false
+despawnEffect: unitCapKill
+despawnSound: uiUnlock
+width: 15
+height: 15
+fragBullets: 1
+fragBullet: {
+type: basicBulletType
+speed: 0
+lifetime: 60
+collides: false
+despawnEffect: unitCapKill
+despawnSound: uiUnlock
+width: 15
+height: 15
+fragBullets: 1
+fragBullet: {
+type: basicBulletType
+speed: 0
+lifetime: 60
+collides: false
+despawnEffect: unitCapKill
+despawnSound: uiUnlock
+width: 15
+height: 15
+fragBullets: 1
+fragBullet: {
+type: basicBulletType
+width: 10
+height: 10
+speed: 0
+lifetime: 90
+collides: false
+despawnEffect: none
+fragBullets: 1
+fragBullet: {
+type: explosionBulletType
+collidesAir: true
+despawnEffect: {
+type: ExplosionEffect
+lifetime: 50f
+waveStroke: 5f
+waveLife: 24f
+waveColor: "ffff6b"
+sparkColor: "ffff6b"
+smokeColor: "ffffff"
+waveRad: 64f
+smokeSize: 4f
+smokes: 21
+smokeSizeBase: 0f
+sparks: 30
+sparkRad: 64f
+sparkLen: 5f
+sparkStroke: 2f
+}
+despawnHit: true
+lightning: 3
+lightningLength: 24
+lightningDamage: 24
+lightningColor: "ffff6b"
+hitSound: explosionMissile
+killShooter: false
+splashDamage: 420
+scaledSplashDamage: true
+splashDamageRadius: 45
+buildingDamageMultiplier: 999
+}
+}
+}
+}
+}
+}
+}
+}
+]
+}
+
+
+
+
+
+
+
+
+
