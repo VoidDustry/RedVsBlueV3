@@ -1,0 +1,344 @@
+// Obliterate, author: alphy
+type: "flying", name: "Obliterate"
+credit: "alphy", flying: true, lowAltitude: true, omniMovement: true, faceTarget: true
+circleTarget: false, speed: 0.55, accel: 0.04, drag: 0.04, rotateSpeed: 1.6
+health: 42000, armor: 20, hitSize: 66, aimDst: 33, softShadowScl: 0.5, range: 230, itemCapacity: 400, buildSpeed: 0.01
+canAttack: true, targetAir: true, targetGround: true, playerControllable: true
+logicControllable: true, useUnitCap: true, coreUnitDock: false
+outlines: false, outlineColor: "565666", drawCell: true, clipSize: 720
+engineSize: 0, engineColor: "ffd37f", engineColorInner: "ffffff"
+engines: [
+    { x: 11, y: -41.5, radius: 3.8, rotation: 270 }
+    { x: -11, y: -41.5, radius: 3.8, rotation: 270 }
+    { x: 31, y: -35.5, radius: 4, rotation: 270 }
+    { x: -31, y: -35.5, radius: 4, rotation: 270 }
+]
+trailLength: 16, trailScl: 3.2
+moveSound: "loopThruster", moveSoundVolume: 0.8, moveSoundPitchMin: 0.45, moveSoundPitchMax: 0.7
+lightRadius: 220, lightColor: "ffd37f", lightOpacity: 0.45
+deathSound: "explosionReactor2", deathSoundVolume: 1
+deathExplosionEffect: {
+    type: "MultiEffect"
+    effects: [
+        { type: "ParticleEffect", lifetime: 70, particles: 40, randLength: false, baseLength: 150, length: -146, cone: 180, line: true, strokeFrom: 1, strokeTo: 3.5, lenFrom: 6, lenTo: 26, interp: "pow2In", colorFrom: "ffd37f00", colorTo: "ffe39a" }
+        { type: "WaveEffect", lifetime: 70, sizeFrom: 150, sizeTo: 6, strokeFrom: 1, strokeTo: 9, interp: "pow2In", colorFrom: "d4816b00", colorTo: "ffd37f" }
+        { type: "ParticleEffect", lifetime: 70, particles: 1, length: 0, sizeFrom: 0, sizeTo: 30, interp: "pow2In", colorFrom: "2a1a10", colorTo: "d4816b" }
+        { type: "ParticleEffect", lifetime: 70, particles: 1, length: 0, sizeFrom: 0, sizeTo: 12, interp: "pow3In", colorFrom: "ffffff00", colorTo: "ffffff" }
+        { type: "ExplosionEffect", lifetime: 90, waveLife: 20, waveColor: "ffd37f", smokeColor: "6e7080", sparkColor: "ffe39a", waveStroke: 10, waveRad: 150, smokes: 24, smokeSize: 12, smokeRad: 120, sparks: 40, sparkRad: 170, sparkLen: 14, sparkStroke: 3.5 }
+        { type: "WaveEffect", lifetime: 40, sizeFrom: 0, sizeTo: 190, strokeFrom: 14, strokeTo: 0, interp: "circleOut", colorFrom: "ffffff", colorTo: "ffd37f" }
+    ]
+}
+abilities: [
+    // drifting motes on the halo ring, always on (minVelocity 0)
+    {
+        type: "MoveEffectAbility", minVelocity: 0, interval: 7, amount: 1, x: 0, y: -6, rangeLengthMin: 19, rangeLengthMax: 27, parentizeEffects: true
+        color: "ffd37f"
+        effect: { type: "ParticleEffect", lifetime: 40, particles: 1, length: 5, cone: 180, sizeFrom: 1.1, sizeTo: 0, colorFrom: "ffe39a", colorTo: "d4816b", layer: 117, interp: "pow2Out" }
+    }
+    // inward sparks feeding the core
+    {
+        type: "MoveEffectAbility", minVelocity: 0, interval: 14, amount: 1, x: 0, y: -6, parentizeEffects: true
+        color: "ffd37f"
+        effect: { type: "ParticleEffect", lifetime: 40, particles: 3, randLength: false, baseLength: 22, length: -20, cone: 180, line: true, strokeFrom: 0.4, strokeTo: 1.4, lenFrom: 2, lenTo: 7, interp: "pow2In", colorFrom: "d4816b00", colorTo: "ffd37f", layer: 117 }
+    }
+]
+parts: [
+    // body heat: no idle glow; hull accents only flare when the cannons fire
+    { type: "RegionPart", suffix: "", drawRegion: false, outline: false, heatColor: "ffd37f", heatLayerOffset: 0.0005, heatProgress: { type: "heat", op: "mul", amount: 0.8 } }
+
+    // ===== halo: compact, stays inside the wing holes (radius <= 25), only the spikes reach past =====
+    { type: "ShapePart", circle: true, hollow: true, x: 0, y: -6, radius: 24, stroke: 1.6, color: "ffd37f", layer: 117, progress: 1 }
+    { type: "ShapePart", circle: true, hollow: true, x: 0, y: -6, radius: 19, stroke: 0.6, color: "ffe39a88", layer: 117, progress: 1 }
+    // two triangles spinning against each other (hexagram)
+    { type: "ShapePart", hollow: true, sides: 3, x: 0, y: -6, radius: 17, stroke: 1, rotateSpeed: 0.45, color: "ffd37fcc", layer: 117, progress: 1 }
+    { type: "ShapePart", hollow: true, sides: 3, x: 0, y: -6, radius: 17, stroke: 1, rotateSpeed: -0.45, color: "ffd37fcc", layer: 117, progress: 1 }
+    // spikes riding the ring (outward blade + short inward nub)
+    { type: "HaloPart", tri: true, shapes: 4, x: 0, y: -6, radius: 3, triLength: 14, haloRadius: 25, haloRotateSpeed: 0.7, color: "ffd37f", layer: 117, progress: 1 }
+    { type: "HaloPart", tri: true, shapes: 4, x: 0, y: -6, radius: 3, triLength: 4, shapeRotation: 180, haloRadius: 25, haloRotateSpeed: 0.7, color: "ffd37f", layer: 117, progress: 1 }
+    // bead chain, counter-rotating
+    { type: "HaloPart", sides: 4, shapes: 8, x: 0, y: -6, radius: 1.1, haloRadius: 24, haloRotateSpeed: -1.2, color: "ffffff", layer: 117.01, progress: 1 }
+    // one expanding shock ring on a loop
+    {
+        type: "ShapePart", circle: true, hollow: true, x: 0, y: -6, radius: 8, radiusTo: 30, stroke: 2, strokeTo: 0, color: "ffd37f", colorTo: "d4816b00", layer: 117
+        progress: { type: "time", op: "loop", time: 120 }
+    }
+    // core
+    {
+        type: "ShapePart", circle: true, x: 0, y: -6, radius: 4, radiusTo: 6, color: "ffd37f44", layer: 117
+        progress: { type: "time", ops: [ { op: "mul", amount: 0 }, { op: "sin", scl: 10, mag: 0.5 }, { op: "add", amount: 0.5 } ] }
+    }
+    { type: "ShapePart", circle: true, x: 0, y: -6, radius: 2.8, color: "ffd37f", layer: 117.01, progress: 1 }
+    { type: "ShapePart", circle: true, x: 0, y: -6, radius: 1.4, color: "ffffff", layer: 117.02, progress: 1 }
+    { type: "ShapePart", hollow: true, sides: 4, x: 0, y: -6, radius: 6.5, stroke: 0.8, rotateSpeed: 1.8, color: "ffd37f", layer: 117, progress: 1 }
+]
+weapons: [
+    // ===== twin rectangular cannons (mounted behind the wing holes, 360 deg turrets): 1 shot/s total, alternating; shells open black holes that implode =====
+    {
+        name: "obliterate-cannon", x: 30, y: -11, shootY: 31, mirror: true, alternate: true
+        top: true, layerOffset: 0.002, shadow: 16, rotate: true, rotateSpeed: 2
+        reload: 120, recoil: 7, recoilTime: 110, recoilPow: 1.2, shake: 9, shootCone: 12, inaccuracy: 1
+        heatColor: "ffa664", cooldownTime: 200
+        shootSound: "dp-obliterate-cannon-shot", shootSoundVolume: 0.65, soundPitchMin: 0.97, soundPitchMax: 1.03
+        parts: [
+            // heat: weapon's own -heat (orange, vents) + yellow layer + white-hot prong tips; hotter layers cool off first
+            { type: "RegionPart", suffix: "-hot", drawRegion: false, outline: false, heatColor: "ffd37f", heatProgress: { type: "heat", op: "curve", interp: "pow2In" } }
+            { type: "RegionPart", suffix: "-tip", drawRegion: false, outline: false, heatColor: "ffffff", heatProgress: { type: "heat", op: "curve", interp: "pow3In" } }
+            // muzzle glow that flares on each shot
+            { type: "ShapePart", circle: true, x: 0, y: 31, radius: 0, radiusTo: 10, color: "ffd37f33", layer: 117, progress: "heat" }
+            { type: "ShapePart", circle: true, x: 0, y: 31, radius: 0, radiusTo: 6, color: "ffd37f88", layer: 117.01, progress: "heat" }
+            { type: "ShapePart", circle: true, x: 0, y: 31, radius: 0, radiusTo: 3, color: "ffffff", layer: 117.02, progress: "heat" }
+        ]
+        bullet: {
+            type: "BasicBulletType", sprite: "bullet", width: 34, height: 58, shrinkY: 0, drawSize: 120, layer: 109.95
+            speed: 5.2, lifetime: 45, damage: 110, pierceArmor: true, despawnHit: true, scaleLife: true
+            // passes through everything and always opens the hole at the aim point (cannot be stopped, shot down, absorbed or reflected)
+            collides: false, collidesTiles: false, hittable: false, absorbable: false, reflectable: false
+            backColor: "d4816b", frontColor: "ffe39a", hitColor: "ffd37f", lightColor: "ffd37f", lightRadius: 44, lightOpacity: 0.8
+            trailColor: "ffd37f", trailLength: 16, trailWidth: 6.5
+            // shell + trail are bloomed (109.95, the unit sits at 90 so it flies over it); gradient glow, black core + rims sit above the bloom so the core stays black
+            parts: [
+                { type: "RegionPart", name: "dp-obliterate-maw-glow", outline: false, blending: "additive", layer: 110.05, xScl: 0.6, yScl: 0.6, color: "ffd37fcc", progress: 1 }
+                { type: "ShapePart", circle: true, radius: 7.5, color: "000000", layer: 110.06, progress: 1 }
+                { type: "ShapePart", circle: true, hollow: true, radius: 7.8, stroke: 1.1, color: "ffe39a", layer: 110.061, progress: 1 }
+                { type: "ShapePart", circle: true, hollow: true, radius: 6.6, stroke: 1.3, color: "ffd37f40", layer: 110.062, progress: 1 }
+                // bloom copy (bloom only processes layers ~100-110.02): halo spills out around the shell, the black core above stays black
+                { type: "ShapePart", circle: true, radius: 12, color: "ffd37f55", layer: 109.9, progress: 1 }
+                { type: "ShapePart", circle: true, radius: 9, color: "ffe39aaa", layer: 109.91, progress: 1 }
+            ]
+            trailInterval: 2, trailEffect: {
+                type: "MultiEffect"
+                effects: [
+                    { type: "ParticleEffect", lifetime: 22, particles: 2, length: 7, cone: 180, sizeFrom: 2.4, sizeTo: 0, colorFrom: "ffd37f", colorTo: "d4816b", layer: 109.8 }
+                    { type: "ParticleEffect", lifetime: 24, region: "circle-shadow", particles: 1, length: 3, sizeFrom: 11, sizeTo: 0, colorFrom: "ffd37f77", colorTo: "d4816b00", layer: 109.79 }
+                    { type: "ParticleEffect", lifetime: 20, particles: 1, length: 2, sizeFrom: 4, sizeTo: 0, colorFrom: "ffd37fcc", colorTo: "d4816b00", layer: 109.9 }
+                ]
+            }
+            shootEffect: {
+                type: "MultiEffect"
+                effects: [
+                    "shootTitan"
+                    { type: "ParticleEffect", lifetime: 26, region: "circle-shadow", particles: 1, length: 0, sizeFrom: 22, sizeTo: 0, interp: "pow2Out", colorFrom: "ffffffcc", colorTo: "ffd37f00", lightOpacity: 0.9 }
+                    { type: "ParticleEffect", lifetime: 34, region: "circle-shadow", particles: 1, length: 0, sizeFrom: 10, sizeTo: 34, interp: "pow2Out", colorFrom: "ffd37f88", colorTo: "ffd37f00" }
+                ]
+            }
+            smokeEffect: "shootSmokeTitan"
+            hitSound: "none"
+            // stage 1 (102 ticks): a black hole opens and grows, eating light and debris.
+            // Bloom covers layers 99.98..110.02: everything glowing sits at <=110.01, the black disc sits above (110.03) so it stays black; the main ring is repeated above it (110.04) with an inward falloff.
+            hitEffect: {
+                type: "SoundEffect", sound: "dp-obliterate-hole-charge", minVolume: 0.585, maxVolume: 0.65, minPitch: 0.97, maxPitch: 1.03
+                effect: {
+                    type: "MultiEffect"
+                    effects: [
+                        { type: "ParticleEffect", lifetime: 102, region: "circle-shadow", particles: 1, length: 0, sizeFrom: 10, sizeTo: 68, interp: "pow2Out", colorFrom: "ffd37f00", colorTo: "ffd37fbb", layer: 109.9 }
+                        { type: "ParticleEffect", lifetime: 102, region: "circle-shadow", particles: 1, length: 0, sizeFrom: 20, sizeTo: 110, interp: "pow2Out", colorFrom: "d4816b00", colorTo: "d4816b55", layer: 109.89 }
+                        { type: "ParticleEffect", lifetime: 102, particles: 1, length: 0, sizeFrom: 0, sizeTo: 34, interp: "pow2Out", colorFrom: "000000", colorTo: "000000", lightOpacity: 0, layer: 110.03 }
+                        // main ring on top of the black + a soft inward falloff over the black edge
+                        { type: "WaveEffect", lifetime: 102, sizeFrom: 0, sizeTo: 35.5, strokeFrom: 1, strokeTo: 3, interp: "pow2Out", colorFrom: "ffd37f", colorTo: "ffe39a", layer: 110.04 }
+                        { type: "WaveEffect", lifetime: 102, sizeFrom: 0, sizeTo: 33, strokeFrom: 0.8, strokeTo: 2.6, interp: "pow2Out", colorFrom: "ffd37f00", colorTo: "ffd37f88", layer: 110.035 }
+                        { type: "WaveEffect", lifetime: 102, sizeFrom: 0, sizeTo: 30.8, strokeFrom: 0.8, strokeTo: 2.4, interp: "pow2Out", colorFrom: "d4816b00", colorTo: "ffd37f44", layer: 110.034 }
+                        { type: "WaveEffect", lifetime: 102, sizeFrom: 0, sizeTo: 28.8, strokeFrom: 0.8, strokeTo: 2.2, interp: "pow2Out", colorFrom: "d4816b00", colorTo: "d4816b22", layer: 110.033 }
+                        { type: "WaveEffect", lifetime: 102, sizeFrom: 0, sizeTo: 35.5, strokeFrom: 1, strokeTo: 3, interp: "pow2Out", colorFrom: "ffd37f", colorTo: "ffe39a", layer: 110.01 }
+                        { type: "WaveEffect", lifetime: 102, sizeFrom: 7, sizeTo: 51, strokeFrom: 0.4, strokeTo: 1.2, interp: "pow2Out", colorFrom: "d4816b00", colorTo: "ffd37f99", layer: 110.01 }
+                        { type: "WaveEffect", lifetime: 102, sizeFrom: 4, sizeTo: 39, strokeFrom: 0.5, strokeTo: 1.6, interp: "pow2Out", colorFrom: "ffffff00", colorTo: "ffffffcc", layer: 110.01 }
+                        { type: "ParticleEffect", lifetime: 102, particles: 30, randLength: false, baseLength: 112, length: -75, cone: 180, line: true, strokeFrom: 0.6, strokeTo: 2, lenFrom: 4, lenTo: 16, interp: "pow2In", colorFrom: "ffd37f00", colorTo: "ffe39a", layer: 110 }
+                        { type: "ParticleEffect", lifetime: 102, particles: 18, randLength: false, baseLength: 92, length: -54, cone: 180, sizeFrom: 0.6, sizeTo: 2.6, interp: "pow3In", colorFrom: "d4816b00", colorTo: "ffd37f", layer: 110 }
+                        { type: "ParticleEffect", lifetime: 102, particles: 40, randLength: false, baseLength: 150, length: -112, cone: 180, sizeFrom: 0.4, sizeTo: 1.6, interp: "pow2In", colorFrom: "ffffff00", colorTo: "ffe39a", layer: 110 }
+                    ]
+                }
+            }
+            despawnEffect: "none"
+            // stage 2: the hole collapses in 10 ticks, then the implosion flash and shock
+            fragBullets: 1, fragSpread: 0, fragRandomSpread: 0, fragVelocityMin: 1, fragVelocityMax: 1
+            fragBullet: {
+                type: "BulletType", speed: 0, lifetime: 102, damage: 0, keepVelocity: false, drawSize: 220
+                collides: false, collidesTiles: false, hittable: false, absorbable: false, reflectable: false
+                // infinite pierce: nothing can stop or absorb the hole; the blast goes through walls and hits every building in range at full
+                // damage (splashDamagePierce), and ignores armor (armorMultiplier 0; pierceArmor alone does not cover splash)
+                pierce: true, pierceBuilding: true, pierceCap: -1
+                despawnHit: true, splashDamage: 360, splashDamageRadius: 58, splashDamagePierce: true, pierceArmor: true, armorMultiplier: 0, hitShake: 12
+                status: "unmoving", statusDuration: 42
+                // implosion lightning: 9 long arcs
+                lightning: 9, lightningLength: 14, lightningLengthRand: 8, lightningDamage: 40, lightningColor: "ffe39a"
+                lightningType: {
+                    type: "BulletType", speed: 0.0001, damage: 0, pierceArmor: true, lifetime: 10, hittable: false, absorbable: false, reflectable: false
+                    status: "shocked", statusDuration: 10, despawnEffect: "none", hitSound: "none", lightColor: "ffd37f"
+                    hitEffect: { type: "ParticleEffect", lifetime: 14, particles: 4, length: 12, cone: 180, line: true, strokeFrom: 1.6, strokeTo: 0, lenFrom: 5, lenTo: 0, colorFrom: "ffffff", colorTo: "ffd37f", layer: 110 }
+                }
+                // accretion disc around the hole (grows with it; the black disc covers the inside)
+                parts: [
+                    { type: "HaloPart", tri: true, shapes: 8, radius: 1.6, radiusTo: 3.4, triLength: 5, triLengthTo: 16, shapeRotation: 90, haloRadius: 6, haloRadiusTo: 40, haloRotateSpeed: 2.4, color: "ffd37f", colorTo: "ffe39a", layer: 110.01, progress: { type: "life", op: "curve", interp: "pow2Out" } }
+                    { type: "HaloPart", tri: true, shapes: 5, radius: 1.2, radiusTo: 2.6, triLength: 4, triLengthTo: 12, shapeRotation: 90, haloRadius: 9, haloRadiusTo: 47, haloRotateSpeed: 1.5, color: "d4816b", colorTo: "ffd37f", layer: 110.005, progress: { type: "life", op: "curve", interp: "pow2Out" } }
+                    { type: "HaloPart", tri: true, shapes: 6, radius: 1.4, radiusTo: 2.8, triLength: 3, triLengthTo: 13, shapeRotation: 180, haloRadius: 18, haloRadiusTo: 62, haloRotateSpeed: 0.6, color: "ffd37f44", colorTo: "ffd37faa", layer: 110, progress: { type: "life", op: "curve", interp: "pow2Out" } }
+                    { type: "HaloPart", sides: 12, shapes: 12, radius: 0.6, radiusTo: 1.4, haloRadius: 12, haloRadiusTo: 56, haloRotateSpeed: 0.9, color: "ffffff", colorTo: "ffe39a", layer: 110.01, progress: { type: "life", op: "curve", interp: "pow2Out" } }
+                ]
+                // crackling: every 10 ticks an infall ring + 2 lightning arcs + a 0.23 s slow in the blast radius (continuous while charging, nothing after)
+                bulletInterval: 10, intervalBullets: 1, intervalRandomSpread: 0, intervalDelay: 0
+                intervalBullet: {
+                    type: "BulletType", speed: 0, lifetime: 1, damage: 0, keepVelocity: false
+                    collides: false, collidesTiles: false, hittable: false, absorbable: false, reflectable: false
+                    despawnHit: true, hitSound: "none", despawnEffect: "none", lightRadius: 0
+                    splashDamage: 0, splashDamageRadius: 58, status: "slow", statusDuration: 14
+                    lightning: 2, lightningLength: 8, lightningLengthRand: 5, lightningDamage: 11, lightningColor: "ffd37f"
+                    lightningType: {
+                        type: "BulletType", speed: 0.0001, damage: 0, pierceArmor: true, lifetime: 10, hittable: false, absorbable: false, reflectable: false
+                        status: "shocked", statusDuration: 10, despawnEffect: "none", hitSound: "none", lightColor: "ffd37f"
+                        hitEffect: { type: "ParticleEffect", lifetime: 12, particles: 3, length: 9, cone: 180, line: true, strokeFrom: 1.2, strokeTo: 0, lenFrom: 4, lenTo: 0, colorFrom: "ffffff", colorTo: "ffd37f", layer: 110 }
+                    }
+                    hitEffect: {
+                        type: "MultiEffect"
+                        effects: [
+                            { type: "WaveEffect", lifetime: 22, sizeFrom: 78, sizeTo: 34, strokeFrom: 0, strokeTo: 2.2, interp: "pow2In", colorFrom: "ffd37f00", colorTo: "ffe39a", layer: 110.01 }
+                            { type: "ParticleEffect", lifetime: 22, particles: 8, randLength: false, baseLength: 80, length: -44, cone: 180, line: true, strokeFrom: 0.4, strokeTo: 1.6, lenFrom: 3, lenTo: 12, interp: "pow2In", colorFrom: "ffe39a00", colorTo: "ffffff", layer: 110 }
+                            { type: "ParticleEffect", lifetime: 18, region: "circle-shadow", particles: 1, length: 0, sizeFrom: 40, sizeTo: 70, interp: "pow2Out", colorFrom: "ffd37f55", colorTo: "ffd37f00", layer: 109.9 }
+                        ]
+                    }
+                }
+                fragBullets: 1, fragSpread: 0, fragRandomSpread: 0, fragVelocityMin: 1, fragVelocityMax: 1
+                fragBullet: {
+                    type: "BulletType", speed: 0, lifetime: 1, damage: 0, keepVelocity: false
+                    collides: false, collidesTiles: false, hittable: false, absorbable: false, reflectable: false
+                    despawnHit: true, splashDamage: 0, splashDamageRadius: 58, status: "slow", statusDuration: 120
+                    hitEffect: "none", despawnEffect: "none", hitSound: "none", lightRadius: 0
+                }
+                hitColor: "ffd37f", lightColor: "ffd37f", lightRadius: 0
+                hitSound: "explosionArtilleryShockBig", hitSoundVolume: 1, hitSoundPitch: 0.75
+                hitEffect: {
+                    type: "MultiEffect"
+                    effects: [
+                        // collapse (black stays above bloom, everything else glows)
+                        { type: "ParticleEffect", lifetime: 10, particles: 1, length: 0, sizeFrom: 34, sizeTo: 0, interp: "pow3In", colorFrom: "000000", colorTo: "000000", lightOpacity: 0, layer: 110.03 }
+                        { type: "WaveEffect", lifetime: 10, sizeFrom: 35.5, sizeTo: 0, strokeFrom: 3, strokeTo: 7, interp: "pow3In", colorFrom: "ffe39a", colorTo: "ffffff", layer: 110.01 }
+                        { type: "WaveEffect", lifetime: 10, sizeFrom: 35.5, sizeTo: 0, strokeFrom: 3, strokeTo: 7, interp: "pow3In", colorFrom: "ffe39a", colorTo: "ffffff", layer: 110.04 }
+                        { type: "WaveEffect", lifetime: 10, sizeFrom: 32.5, sizeTo: 0, strokeFrom: 3, strokeTo: 5, interp: "pow3In", colorFrom: "ffd37f77", colorTo: "ffffff00", layer: 110.035 }
+                        { type: "WaveEffect", lifetime: 10, sizeFrom: 56, sizeTo: 0, strokeFrom: 1, strokeTo: 4, interp: "pow3In", colorFrom: "d4816b", colorTo: "ffe39a", layer: 110.01 }
+                        { type: "ParticleEffect", lifetime: 10, region: "circle-shadow", particles: 1, length: 0, sizeFrom: 68, sizeTo: 4, interp: "pow3In", colorFrom: "ffd37fbb", colorTo: "ffffff", layer: 109.9 }
+                        { type: "ParticleEffect", lifetime: 10, particles: 24, randLength: false, baseLength: 60, length: -58, cone: 180, line: true, strokeFrom: 1, strokeTo: 2.5, lenFrom: 6, lenTo: 14, interp: "pow3In", colorFrom: "ffe39a", colorTo: "ffffff", layer: 110 }
+                        // implosion flash + shock, right as the hole closes
+                        { type: "ParticleEffect", startDelay: 9, lifetime: 28, region: "circle-shadow", particles: 1, length: 0, sizeFrom: 60, sizeTo: 0, interp: "pow2Out", colorFrom: "ffffff", colorTo: "ffd37f00", lightOpacity: 1 }
+                        { type: "ParticleEffect", startDelay: 9, lifetime: 90, region: "circle-shadow", particles: 1, length: 0, sizeFrom: 100, sizeTo: 40, interp: "pow2Out", colorFrom: "d4816b88", colorTo: "d4816b00" }
+                        { type: "ParticleEffect", startDelay: 9, lifetime: 14, particles: 1, length: 0, sizeFrom: 12, sizeTo: 0, interp: "pow2Out", colorFrom: "ffffff", colorTo: "ffe39a" }
+                        { type: "WaveEffect", startDelay: 9, lifetime: 22, sizeFrom: 0, sizeTo: 66, strokeFrom: 8, strokeTo: 0, interp: "circleOut", colorFrom: "ffffff", colorTo: "ffd37f" }
+                        { type: "WaveEffect", startDelay: 9, lifetime: 36, sizeFrom: 8, sizeTo: 92, strokeFrom: 3, strokeTo: 0, interp: "pow3Out", colorFrom: "ffd37f", colorTo: "d4816b" }
+                        { type: "WaveEffect", startDelay: 22, lifetime: 34, sizeFrom: 20, sizeTo: 124, strokeFrom: 4, strokeTo: 0, interp: "pow2Out", colorFrom: "ffe39a", colorTo: "d4816b00" }
+                        { type: "ParticleEffect", startDelay: 9, lifetime: 22, particles: 10, baseLength: 0, length: 120, cone: 180, line: true, strokeFrom: 5, strokeTo: 0, lenFrom: 60, lenTo: 0, interp: "pow3Out", colorFrom: "ffffff", colorTo: "ffd37f" }
+                        { type: "ParticleEffect", startDelay: 9, lifetime: 32, particles: 18, baseLength: 6, length: 82, cone: 180, line: true, strokeFrom: 3, strokeTo: 0, lenFrom: 18, lenTo: 0, interp: "pow3Out", colorFrom: "ffe39a", colorTo: "d4816b" }
+                        { type: "ParticleEffect", startDelay: 9, lifetime: 46, particles: 30, length: 110, cone: 180, sizeFrom: 2, sizeTo: 0, interp: "pow3Out", colorFrom: "ffffff", colorTo: "ffd37f" }
+                        { type: "ParticleEffect", startDelay: 9, lifetime: 50, particles: 12, length: 60, cone: 180, sizeFrom: 4.5, sizeTo: 0, interp: "pow2Out", colorFrom: "ffd37f", colorTo: "d4816b00" }
+                    ]
+                }
+                despawnEffect: "none"
+            }
+        }
+    }
+
+    // ===== mouth: 3 big homing plasma orbs, 0.67 s apart, 6.8 s cooldown; glow only.
+    //       Each orb leaves fire + a lingering glow pool (3 s) that pulses damage and applies Evaporating. =====
+    {
+        name: "obliterate-maw", x: 0, y: 6, shootY: 18, mirror: false, top: false, rotate: false
+        shootCone: 12, reload: 408, inaccuracy: 2, recoil: 0, shake: 7, cooldownTime: 180
+        shoot: { shots: 3, shotDelay: 40, firstShotDelay: 36 }
+        shootSound: "dp-obliterate-maw-blast", shootSoundVolume: 1.4, soundPitchMin: 0.97, soundPitchMax: 1.03
+        parts: [
+            // charge-up: bright true radial gradient glow (additive), grows with charge, stays full through the burst
+            // (heat >= 0.6 counts as full: shots are 40 ticks apart, cooldown 180), holds ~1.2 s after the last shot, then fades ~1.8 s
+            { type: "RegionPart", name: "dp-obliterate-maw-glow", outline: false, blending: "additive", layer: 117, x: 0, y: 18, xScl: 0, yScl: 0, growX: 1, growY: 1, growProgress: { type: "charge", op: "add", other: { type: "heat", op: "compress", start: 0, end: 0.6 } }, progress: { type: "charge", op: "add", other: { type: "heat", op: "compress", start: 0, end: 0.6 } }, color: "ffffff00", colorTo: "ffffffbf" }
+            { type: "RegionPart", name: "dp-obliterate-maw-glow", outline: false, blending: "additive", layer: 117.01, x: 0, y: 18, xScl: 0, yScl: 0, growX: 0.55, growY: 0.55, growProgress: { type: "charge", op: "add", other: { type: "heat", op: "compress", start: 0, end: 0.6 } }, progress: { type: "charge", op: "add", other: { type: "heat", op: "compress", start: 0, end: 0.6 } }, color: "ffffff00", colorTo: "ffffffbf" }
+            { type: "RegionPart", name: "dp-obliterate-maw-glow-core", outline: false, blending: "additive", layer: 117.02, x: 0, y: 18, xScl: 0, yScl: 0, growX: 1, growY: 1, growProgress: { type: "charge", op: "add", other: { type: "heat", op: "compress", start: 0, end: 0.6 } }, progress: { type: "charge", op: "add", other: { type: "heat", op: "compress", start: 0, end: 0.6 } }, color: "ffffff00", colorTo: "ffffffbf" }
+            // heat: smooth gradient from the inner surface of the mouth (white on the surface -> yellow -> orange -> metal),
+            // baked colour sprites drawn with normal blending just above the hull; white cools first, then yellow, then orange
+            { type: "RegionPart", name: "dp-obliterate-maw-hg1", outline: false, layer: 90.0013, x: 0, y: -6, color: "ffffff00", colorTo: "ffffff", progress: "heat" }
+            { type: "RegionPart", name: "dp-obliterate-maw-hg2", outline: false, layer: 90.0014, x: 0, y: -6, color: "ffffff00", colorTo: "ffffff", progress: { type: "heat", op: "curve", interp: "pow2In" } }
+            { type: "RegionPart", name: "dp-obliterate-maw-hg3", outline: false, layer: 90.0015, x: 0, y: -6, color: "ffffff00", colorTo: "ffffff", progress: { type: "heat", op: "curve", interp: "pow3In" } }
+        ]
+        bullet: {
+            type: "BasicBulletType", sprite: "circle-bullet", width: 30, height: 30, shrinkY: 0, drawSize: 140
+            speed: 4.4, lifetime: 48, damage: 624, splashDamage: 546, splashDamageRadius: 44
+            homingPower: 0.07, homingRange: 90, despawnHit: true
+            backColor: "d4816b", frontColor: "ffffff", hitColor: "ffd37f", lightColor: "ffd37f", lightRadius: 70, lightOpacity: 1
+            trailColor: "ffd37f", trailLength: 18, trailWidth: 7
+            trailInterval: 2, trailEffect: {
+                type: "MultiEffect"
+                effects: [
+                    { type: "ParticleEffect", lifetime: 26, region: "circle-shadow", particles: 1, length: 4, sizeFrom: 9, sizeTo: 0, colorFrom: "ffd37f88", colorTo: "d4816b00", layer: 109.8 }
+                    { type: "ParticleEffect", lifetime: 22, region: "circle-shadow", particles: 1, length: 2, sizeFrom: 6, sizeTo: 0, colorFrom: "ffe39a66", colorTo: "ffd37f00", layer: 110.045 }
+                ]
+            }
+            // normal look = bloomed glow ball + tail (bullet layer); an above-hole layer (110.04+: gradient glow, core, tail particles, impact)
+            // keeps it visible over black holes. The fire and glow pool it leaves stay below the holes.
+            // fire on the ground (createIncend) + enemy buildings in the splash catch fire
+            incendAmount: 5, incendSpread: 22, incendChance: 1, makeFire: true
+            parts: [
+                // bloomed glow ball (bloom = layers 100-110.02; the unit sits at 90 so it is drawn over the hull)
+                { type: "ShapePart", circle: true, radius: 26, color: "ffd37f14", layer: 109.9, progress: 1 }
+                { type: "ShapePart", circle: true, radius: 20, color: "ffd37f26", layer: 109.91, progress: 1 }
+                { type: "ShapePart", circle: true, radius: 14, color: "ffd37f40", layer: 109.92, progress: 1 }
+                { type: "ShapePart", circle: true, radius: 9, color: "ffe39a66", layer: 109.93, progress: 1 }
+                { type: "ShapePart", circle: true, radius: 6, color: "ffffff", layer: 109.94, progress: 1 }
+                // gradient glow + core just above the bloom so it stays visible over black holes
+                { type: "RegionPart", name: "dp-obliterate-maw-glow", outline: false, blending: "additive", layer: 110.05, xScl: 0.55, yScl: 0.55, color: "ffffffaa", progress: 1 }
+                { type: "RegionPart", name: "dp-obliterate-maw-glow-core", outline: false, blending: "additive", layer: 110.06, xScl: 0.9, yScl: 0.9, progress: 1 }
+            ]
+            // charge sound lives here (not in chargeSound) so it can play at 1.4 volume like the rest of the mouth
+            chargeEffect: {
+                type: "SoundEffect", sound: "chargeVela", minVolume: 1.4, maxVolume: 1.4, minPitch: 0.97, maxPitch: 1.03
+                effect: {
+                    type: "MultiEffect"
+                    effects: [
+                        { type: "ParticleEffect", lifetime: 36, region: "circle-shadow", particles: 1, length: 0, sizeFrom: 0, sizeTo: 80, interp: "pow2In", colorFrom: "ffd37f00", colorTo: "ffd37f73", lightOpacity: 0.75, lightScl: 3 }
+                        { type: "ParticleEffect", lifetime: 36, region: "circle-shadow", particles: 1, length: 0, sizeFrom: 0, sizeTo: 46, interp: "pow2In", colorFrom: "ffd37f00", colorTo: "ffd37f99" }
+                        { type: "ParticleEffect", lifetime: 36, region: "circle-shadow", particles: 1, length: 0, sizeFrom: 0, sizeTo: 24, interp: "pow3In", colorFrom: "ffe39a00", colorTo: "ffe39abf" }
+                        { type: "ParticleEffect", lifetime: 36, region: "circle-shadow", particles: 1, length: 0, sizeFrom: 0, sizeTo: 12, interp: "pow3In", colorFrom: "ffffff00", colorTo: "ffffffbf" }
+                    ]
+                }
+            }
+            shootEffect: {
+                type: "MultiEffect"
+                effects: [
+                    { type: "ParticleEffect", lifetime: 22, region: "circle-shadow", particles: 1, length: 0, sizeFrom: 40, sizeTo: 0, interp: "pow2Out", colorFrom: "ffffff", colorTo: "ffd37f00", lightOpacity: 1 }
+                    { type: "ParticleEffect", lifetime: 30, region: "circle-shadow", particles: 1, length: 0, sizeFrom: 18, sizeTo: 56, interp: "pow2Out", colorFrom: "ffd37f99", colorTo: "ffd37f00" }
+                    { type: "ParticleEffect", lifetime: 26, region: "circle-shadow", particles: 4, length: 22, cone: 20, sizeFrom: 10, sizeTo: 0, interp: "pow2Out", colorFrom: "ffe39acc", colorTo: "ffd37f00" }
+                ]
+            }
+            smokeEffect: "none"
+            hitSound: "explosionTitan", hitSoundVolume: 1.26, hitSoundPitch: 0.8, hitShake: 8
+            // impact: bloomed white -> yellow glow (bloom layers, drawn over the unit), no flat orange
+            hitEffect: {
+                type: "MultiEffect"
+                effects: [
+                    { type: "ParticleEffect", lifetime: 26, region: "circle-shadow", particles: 1, length: 0, sizeFrom: 40, sizeTo: 0, interp: "pow2Out", colorFrom: "ffffff", colorTo: "ffe39a00", lightOpacity: 1, layer: 109.99 }
+                    { type: "ParticleEffect", lifetime: 44, region: "circle-shadow", particles: 1, length: 0, sizeFrom: 24, sizeTo: 76, interp: "pow2Out", colorFrom: "ffe39acc", colorTo: "ffd37f00", layer: 109.97 }
+                    { type: "ParticleEffect", lifetime: 60, region: "circle-shadow", particles: 1, length: 0, sizeFrom: 50, sizeTo: 20, interp: "pow2Out", colorFrom: "ffd37f66", colorTo: "ffd37f00", layer: 109.96 }
+                    { type: "ParticleEffect", lifetime: 54, region: "circle-shadow", particles: 9, length: 46, cone: 180, sizeFrom: 12, sizeTo: 0, interp: "pow2Out", colorFrom: "ffe39abb", colorTo: "ffd37f00", layer: 109.98 }
+                    { type: "WaveEffect", lifetime: 24, sizeFrom: 6, sizeTo: 52, strokeFrom: 4, strokeTo: 0, interp: "pow2Out", colorFrom: "ffffff", colorTo: "ffd37f", layer: 109.99 }
+                ]
+            }
+            despawnEffect: "none"
+            // lingering glow pool: invisible stationary carrier, pulses an instant splash every 15 ticks for 3 s
+            fragBullets: 1, fragSpread: 0, fragRandomSpread: 0, fragVelocityMin: 1, fragVelocityMax: 1
+            fragBullet: {
+                type: "BulletType", speed: 0, lifetime: 180, damage: 0, keepVelocity: false, drawSize: 90
+                collides: false, collidesTiles: false, hittable: false, absorbable: false, reflectable: false
+                pierce: true, pierceBuilding: true, pierceCap: -1
+                despawnHit: false, hitEffect: "none", despawnEffect: "none", hitSound: "none", lightRadius: 0
+                parts: [
+                    { type: "ShapePart", circle: true, radius: 34, radiusTo: 26, color: "ffd37f22", colorTo: "ffd37f00", layer: 109.5, progress: "life" }
+                    { type: "ShapePart", circle: true, radius: 25, radiusTo: 18, color: "ffd37f33", colorTo: "ffd37f00", layer: 109.51, progress: "life" }
+                    { type: "ShapePart", circle: true, radius: 16, radiusTo: 10, color: "ffe39a44", colorTo: "ffe39a00", layer: 109.52, progress: "life" }
+                    {
+                        type: "ShapePart", circle: true, radius: 8, radiusTo: 11, color: "ffffff55", colorTo: "ffffff00", layer: 109.53
+                        progress: { type: "life", ops: [ { op: "sin", scl: 5, mag: 0.12 } ] }
+                    }
+                ]
+                bulletInterval: 15, intervalBullets: 1, intervalRandomSpread: 0
+                intervalBullet: {
+                    type: "BulletType", speed: 0, lifetime: 1, damage: 0, keepVelocity: false
+                    collides: false, collidesTiles: false, hittable: false, absorbable: false, reflectable: false
+                    pierce: true, pierceBuilding: true, pierceCap: -1
+                    despawnHit: true, splashDamage: 26, splashDamageRadius: 34, splashDamagePierce: true, status: "dp-evaporating", statusDuration: 270
+                    hitEffect: "none", despawnEffect: "none", hitSound: "none", lightRadius: 0
+                }
+            }
+        }
+    }
+]

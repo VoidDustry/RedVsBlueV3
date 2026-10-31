@@ -38,7 +38,7 @@
   "cyerce": { "tier": 6, "stage": 5, "cost": 150, "evolves": ["quad", "dp-giga-unit"] }
   "tecta": { "tier": 6, "stage": 7, "cost": 520, "evolves": ["collaris"] }
   "dp-aractid-unit": { "tier": 6, "stage": 5, "cost": 185, "evolves": ["toxopid"] }
-  "dp-annihilate-unit": { "tier": 7, "stage": 8, "cost": 720, "evolves": ["dagger", "nova", "merui", "flare", "mono"] }
+  "dp-annihilate-unit": { "tier": 7, "stage": 8, "cost": 720, "evolves": ["dp-obliterate-unit", "dagger", "nova", "merui", "flare"] }
 
   "scepter": { "tier": 7, "stage": 6, "cost": 105, "evolves": ["reign"] }
   "navanax": { "tier": 7, "stage": 9, "cost": 450, "evolves": ["dagger", "nova", "merui", "flare", "mono"] }
@@ -77,4 +77,5 @@
   "dp-empire-unit": { "tier": 12, "stage": 11, "cost": 1520, "evolves": ["dagger", "nova", "merui", "flare", "mono"] }
   "dp-omega-unit": { "tier": 12, "stage": 11, "cost": 1340, "evolves": ["dagger", "nova", "merui", "flare", "mono"] }
   "dp-tetraphyllus-unit": { "tier": 12, "stage": 11, "cost": 1080, "evolves": ["dagger", "nova", "merui", "flare", "mono"] }
+  "dp-obliterate-unit": { "tier": 12, "stage": 11, "cost": 1240, "evolves": ["dagger", "nova", "merui", "flare", "mono"] }
 }

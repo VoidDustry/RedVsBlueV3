@@ -1,0 +1,7 @@
+unit.dp-obliterate-unit: {
+	cellRegion: dp-obliterate-unit-cell
+	uiIcon: dp-obliterate-unit-ui
+	fullIcon: dp-obliterate-unit-full
+	previewRegion: dp-obliterate-unit-full
+	shadowRegion: dp-obliterate-unit-full
+}

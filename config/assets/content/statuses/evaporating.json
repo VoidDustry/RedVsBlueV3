@@ -1,0 +1,12 @@
+// Evaporating (author: alphy): applied by Obliterate's mouth-orb glow pools.
+// 150 damage per second (2.5/tick, ignores armor) + electrified's slow/reload penalty 35% weaker
+// (electrified: speed x0.7, reload x0.6  ->  here: speed x0.805, reload x0.74)
+name: "Evaporating"
+show: true, hideDatabase: false, permanent: false
+color: "ffd37f"
+damage: 2.5
+speedMultiplier: 0.805
+reloadMultiplier: 0.74
+effectChance: 0.12
+effect: { type: "ParticleEffect", lifetime: 40, region: "circle-shadow", particles: 2, length: 10, cone: 25, useRotation: false, baseRotation: 90, sizeFrom: 4, sizeTo: 0, interp: "pow2Out", colorFrom: "ffd37faa", colorTo: "ffd37f00" }
+applyEffect: "none"
