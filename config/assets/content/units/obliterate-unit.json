@@ -72,11 +72,11 @@ parts: [
     { type: "ShapePart", hollow: true, sides: 4, x: 0, y: -6, radius: 6.5, stroke: 0.8, rotateSpeed: 1.8, color: "ffd37f", layer: 117, progress: 1 }
 ]
 weapons: [
-    // ===== twin rectangular cannons (mounted behind the wing holes, 360 deg turrets): 1 shot/s total, alternating; shells open black holes that implode =====
+    // ===== twin rectangular cannons (mounted behind the wing holes, 360 deg turrets): alternating, one shot every 1.6 s total; shells open black holes that implode =====
     {
         name: "obliterate-cannon", x: 30, y: -11, shootY: 31, mirror: true, alternate: true
         top: true, layerOffset: 0.002, shadow: 16, rotate: true, rotateSpeed: 2
-        reload: 120, recoil: 7, recoilTime: 110, recoilPow: 1.2, shake: 9, shootCone: 12, inaccuracy: 1
+        reload: 192, recoil: 7, recoilTime: 110, recoilPow: 1.2, shake: 9, shootCone: 12, inaccuracy: 1
         heatColor: "ffa664", cooldownTime: 200
         shootSound: "dp-obliterate-cannon-shot", shootSoundVolume: 0.65, soundPitchMin: 0.97, soundPitchMax: 1.03
         parts: [
