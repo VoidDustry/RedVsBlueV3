@@ -33,7 +33,7 @@ parts: [
 flying: false
 legLength: 35
 hittable: true
-fogRadius: 300
+fogRadius: 37.5
 coreUnitDock: false
 targetAir: true
 targetGround: true

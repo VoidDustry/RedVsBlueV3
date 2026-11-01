@@ -14,7 +14,7 @@ hovering: true
 allowLegStep: true
 canBoost: false
 parts: []
-fogRadius: 420
+fogRadius: 52.5
 targetAir: true
 targetGround: true
 targetable: true

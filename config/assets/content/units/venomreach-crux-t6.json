@@ -91,7 +91,7 @@ stepShake: 1.2
 hovering: true
 shadowElevation: 0.95
 hittable: true
-fogRadius: 300
+fogRadius: 37.5
 coreUnitDock: false
 targetAir: true
 targetGround: true
