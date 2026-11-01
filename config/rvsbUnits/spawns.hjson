@@ -164,7 +164,7 @@ global: {
           units: [
             {type: "dp-regent-unit"}
             {type: "reign", effects: ["freezing"], effectSeconds: 999}
-            {type: "dp-rive-unit", effects: ["unmoving","invincible"], effectSeconds: 999}
+            {type: "dp-rive-unit", effects: ["unmoving","invincible"], effectSeconds: 10}
             {type: "sei", effects: ["freezing"], effectSeconds: 999}
           ]
         }
@@ -176,7 +176,7 @@ global: {
             {type: "scepter", effects: ["boss", "overclock"], effectSeconds: 999}
             {type: "arkyid", effects: ["wet"], effectSeconds: 999}
             {type: "dp-regent-unit"}
-            {type: "dp-rive-unit", effects: ["unmoving","invincible"], effectSeconds: 999}
+            {type: "dp-rive-unit", effects: ["unmoving","invincible"], effectSeconds: 10}
           ]
         }
         {
@@ -187,7 +187,7 @@ global: {
             {type: "antumbra", effects: ["boss"], effectSeconds: 999}
             {type: "vela", effects: ["boss"], effectSeconds: 999}
             {type: "dp-regent-unit"}
-            {type: "dp-rive-unit", effects: ["unmoving","invincible"], effectSeconds: 999}
+            {type: "dp-rive-unit", effects: ["unmoving","invincible"], effectSeconds: 10}
           ]
         }
         {
