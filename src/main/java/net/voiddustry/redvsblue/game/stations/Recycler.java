@@ -58,6 +58,10 @@ public class Recycler {
         Timer.schedule(Recycler::renderRecycler, 0, 1);
     }
 
+    public static boolean owns(String uuid) {
+        return recyclersmap.containsKey(uuid);
+    }
+
     public static void buyRecycler(Player player, Tile tile) {
         if (players.get(player.uuid()).getScore() < 6) {
             player.sendMessage(Bundle.format("station.not-enough-money", Bundle.findLocale(player.locale), 6));

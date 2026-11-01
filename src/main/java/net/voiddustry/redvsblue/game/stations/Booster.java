@@ -45,6 +45,10 @@ public class Booster {
         Timer.schedule(Booster::renderBoosters, 0, 1);
     }
 
+    public static boolean owns(String uuid) {
+        return boostersMap.containsKey(uuid);
+    }
+
     public static void buyBooster(Player player, Tile tile) {
         if (players.get(player.uuid()).getScore() < 18) {
             player.sendMessage(Bundle.format("station.not-enough-money", Bundle.findLocale(player.locale), 18));

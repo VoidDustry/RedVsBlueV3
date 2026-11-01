@@ -137,6 +137,7 @@ public class RedVsBluePlugin extends Plugin {
         SpawnEffect.initEffect();
         Boss.forEachBoss();
         Utils.initControlFilter();
+        UpdateConstructBlocks.start();
         Premium.init();
         CruxUnit.addEvent();
         StationButtons.init();
@@ -340,6 +341,7 @@ public class RedVsBluePlugin extends Plugin {
         
 
         Events.on(EventType.WorldLoadEvent.class, event -> {
+            UpdateConstructBlocks.open = false;
             Miner.clearMiners();
             RepairPoint.clearPoints();
             Laboratory.clearLabs();
@@ -386,8 +388,6 @@ public class RedVsBluePlugin extends Plugin {
             Vars.state.rules.unitCap = 32;
 
             Timer.schedule(() -> {
-                UpdateConstructBlocks updateConstructBlocks = new UpdateConstructBlocks();
-                Timer.schedule(updateConstructBlocks, 10f, 0.2f);
                 Vars.state.rules.bannedBlocks.clear();
                 initRules();
             }, 0.5f);
@@ -400,7 +400,7 @@ public class RedVsBluePlugin extends Plugin {
             blueSpawnY = core.y();
 
 
-            Vars.state.teams.cores(Team.blue).each(Building::kill);
+            core.kill();
 
             for (int x = 0; x < Vars.state.map.width; x++) {
                 for (int y = 0; y < Vars.state.map.height; y++) {
@@ -428,6 +428,7 @@ public class RedVsBluePlugin extends Plugin {
             });
 
             playing = true;
+            UpdateConstructBlocks.open = true;
             gameRun = false;
             gameover = false;
             hardcore = false;

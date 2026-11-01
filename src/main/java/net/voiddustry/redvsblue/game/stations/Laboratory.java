@@ -295,6 +295,10 @@ public class Laboratory {
         );
     }
 
+    public static boolean owns(String uuid) {
+        return labsMap.containsKey(uuid);
+    }
+
     public static void buyLab(
             mindustry.gen.Player player,
             Tile tile

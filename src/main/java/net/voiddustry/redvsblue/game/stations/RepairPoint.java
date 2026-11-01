@@ -54,6 +54,10 @@ public class RepairPoint {
         Timer.schedule(RepairPoint::renderRepairPoints, 0, 1);
     }
 
+    public static boolean owns(String uuid) {
+        return repairPointsMap.containsKey(uuid);
+    }
+
     public static void buyRepairPoint(Player player, Tile tile) {
         if (players.get(player.uuid()).getScore() < 10) {
             player.sendMessage(Bundle.format("station.not-enough-money", Bundle.findLocale(player.locale), 10));

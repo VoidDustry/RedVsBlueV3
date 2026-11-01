@@ -53,6 +53,10 @@ public class ArmorWorkbench {
         Timer.schedule(ArmorWorkbench::renderWorkbenches, 0, 1);
     }
 
+    public static boolean owns(String uuid) {
+        return workbenches.containsKey(uuid);
+    }
+
     public static void buyWorkbench(Player player, Tile tile) {
         if (players.get(player.uuid()).getScore() < 8) {
             player.sendMessage(Bundle.format("station.not-enough-money", Bundle.findLocale(player.locale), 8));
