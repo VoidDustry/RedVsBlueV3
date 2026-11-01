@@ -1,6 +1,7 @@
 {
   uiIcon: unit-navanax-ui
   fullIcon: unit-navanax-ui
+  hidden: true
   health: 45000
   flying: true
   wobble: false
