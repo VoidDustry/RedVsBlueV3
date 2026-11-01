@@ -147,7 +147,7 @@ public class RedVsBluePlugin extends Plugin {
 
         Events.on(EventType.WorldLoadEvent.class, event -> {
             for (UnitType unit : Vars.content.units()) {
-                // data-asset missiles ("controller": "MissileAI", e.g. the Voidweaver singularity, the Serverminate dash trigger) keep their AI,
+                // data-asset missiles ("controller": "MissileAI", e.g. the Serverminate dash trigger) keep their AI,
                 // MissileAI is what makes them fly at the shooter's cursor; Serverminate reads the shooter from it
                 if (unit.aiController.get() instanceof MissileAI) {
                     continue;
@@ -279,7 +279,7 @@ public class RedVsBluePlugin extends Plugin {
         //crux kill registration
         Events.on(EventType.UnitBulletDestroyEvent.class, event -> {
             // bullet.shooter is the unit that fired the first stage, so kills by missile units
-            // (e.g. the Voidweaver black hole) count for the player who fired them
+            // (e.g. the Serverminate dash) count for the player who fired them
             Entityc source = event.bullet.shooter != null ? event.bullet.shooter : event.bullet.owner();
             if (event.unit != null && source instanceof Unit killer) {
                 if (killer.isPlayer() && killer.team == Team.crux) {
